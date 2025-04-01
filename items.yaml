@@ -1,6 +1,6 @@
 Equipment:
 - id: 1
-  name: 生锈的剑
+  name: 🗡️ 生锈的剑
   description: ''
   amount: 1
   individual_value: 6
@@ -9,7 +9,7 @@ Equipment:
     atk: 3
   combo: None
 - id: 2
-  name: 破损的匕首
+  name: 🔪 破损的匕首
   description: ''
   amount: 1
   individual_value: 6
@@ -20,7 +20,7 @@ Equipment:
     speed: 1
   combo: None
 - id: 3
-  name: 旧法杖
+  name: 🏏 旧法杖
   description: ''
   amount: 1
   individual_value: 6
@@ -30,7 +30,7 @@ Equipment:
     maxMp: 2
   combo: None
 - id: 4
-  name: 新手盔甲
+  name: 🛡️ 新手盔甲
   description: ''
   amount: 1
   individual_value: 10
@@ -41,7 +41,7 @@ Equipment:
     speed: 1
   combo: None
 - id: 5
-  name: 旧长袍
+  name: 🛡️ 旧长袍
   description: ''
   amount: 1
   individual_value: 10
@@ -53,7 +53,7 @@ Equipment:
     maxMp: 2
   combo: None
 - id: 6
-  name: 长剑
+  name: 🗡️ 长剑
   description: ''
   amount: 1
   individual_value: 19
@@ -63,7 +63,7 @@ Equipment:
     def: 2
   combo: comboSlash1
 - id: 7
-  name: 匕首
+  name: 🔪 匕首
   description: ''
   amount: 1
   individual_value: 15
@@ -74,7 +74,7 @@ Equipment:
     speed: 2
   combo: comboVampireStab1
 - id: 8
-  name: 法杖
+  name: 🏏 法杖
   description: ''
   amount: 1
   individual_value: 18
@@ -85,7 +85,7 @@ Equipment:
     maxMp: 4
   combo: comboMeditation1
 - id: 9
-  name: 布甲
+  name: 🛡️ 布甲
   description: ''
   amount: 1
   individual_value: 18
@@ -96,7 +96,7 @@ Equipment:
     speed: 2
   combo: None
 - id: 10
-  name: 青铜盔甲
+  name: 🛡️ 青铜盔甲
   description: ''
   amount: 1
   individual_value: 25
@@ -106,7 +106,7 @@ Equipment:
     def: 5
   combo: None
 - id: 11
-  name: 学者长袍
+  name: 🛡️ 学者长袍
   description: ''
   amount: 1
   individual_value: 25
@@ -116,4 +116,87 @@ Equipment:
     def: 3
     mdef: 3
     maxMp: 4
+  combo: None
+- id: 12
+  name: 🏏 战锤
+  description: ''
+  amount: 1
+  individual_value: 72
+  objectType: Weapon
+  statChangeList:
+    atk: 12
+    speed: -2
+  combo: comboArmorBreaker1
+- id: 13
+  name: ⚔️ 双手剑
+  description: ''
+  amount: 1
+  individual_value: 75
+  objectType: Weapon
+  statChangeList:
+    atk: 9
+    def: 2
+  combo: comboSlash2
+- id: 14
+  name: 🏏 智者法杖
+  description: ''
+  amount: 1
+  individual_value: 70
+  objectType: Weapon
+  statChangeList:
+    atk: 4
+    matk: 9
+    maxMp: 5
+  combo: comboMeditation2
+- id: 15
+  name: 🗡️ 三叉戟
+  description: ''
+  amount: 1
+  individual_value: 70
+  objectType: Weapon
+  statChangeList:
+    atk: 7
+    critCh: 20
+    speed: 3
+  combo: comboVampireStab2
+- id: 16
+  name: '---分隔符---'
+  description: ''
+  amount: 1
+  individual_value: 0
+  objectType: ''
+  statChangeList: null
+  combo: ''
+- id: 17
+  name: 🛡️ 铁甲
+  description: ''
+  amount: 1
+  individual_value: 85
+  objectType: Armor
+  statChangeList:
+    maxHp: 8
+    def: 10
+  combo: None
+- id: 18
+  name: 🛡️ 智者上衣
+  description: ''
+  amount: 1
+  individual_value: 85
+  objectType: Armor
+  statChangeList:
+    maxHp: 4
+    def: 4
+    mdef: 7
+    maxMp: 10
+  combo: None
+- id: 19
+  name: 🛡️ 盗贼盔甲
+  description: ''
+  amount: 1
+  individual_value: 80
+  objectType: Armor
+  statChangeList:
+    maxHp: 5
+    def: 6
+    speed: 3
   combo: None

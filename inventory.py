@@ -237,7 +237,7 @@ class Item():
         '''
         amountAdded = self.amount
         self.add_to_inventory(inventory, amountAdded)
-        print(f'{amountAdded}个{self.name}已添加到你的背包！')
+        print(f'{amountAdded}个 \033[33m{self.name}\033[0m 已添加到你的背包！')
 
     def add_to_inventory(self, inventory, amount):
         '''

@@ -28,35 +28,30 @@ def play_menu():
     print('############################')
 
 def showStats(player):
-    print('############################')
-    print('#          STATS           #')
-    print('############################')
-    print('HP: {}/{}'.format(player.stats['hp'], player.stats['maxHp']))
-    print('MP: {}/{}'.format(player.stats['mp'],  player.stats['maxMp']))
-    print('ATK: {}'.format(player.stats['atk']))
-    print('DEF: {}'.format(player.stats['def']))
-    print('MATK: {}'.format(player.stats['matk']))
-    print('MDEF: {}'.format(player.stats['mdef']))
-    print('SPD: {}'.format(player.stats['speed']))
-    print('CRIT: {}'.format(player.stats['critCh']))
-    print('############################')
-    print('#        APTITUDES         #')
-    print('############################')
-    print('STR: {}'.format(player.aptitudes['str']))
-    print('DEX: {}'.format(player.aptitudes['dex']))
-    print('INT: {}'.format(player.aptitudes['int']))
-    print('WIS: {}'.format(player.aptitudes['wis']))
-    print('CONST: {}'.format(player.aptitudes['const']))
-    print('############################')
-    print('MONEY: {}'.format(player.money))
-    print('############################')
-    print('#        EQUIPMENT         #')
-    print('############################')
-    for equipment in player.equipment:
-        if player.equipment[equipment] is not None:
-            print('{}: {}'.format(equipment, player.equipment[equipment].name))
-        else:
-            print('{}:'.format(equipment))
+    stats_template = (
+        f"############################\n"
+        "#          STATS           #\n"
+        f"############################\n"
+        f"\033[31mHP: {player.stats['hp']}/{player.stats['maxHp']}\033[0m  \033[34mMP: {player.stats['mp']}/{player.stats['maxMp']}\033[0m\n"
+        f"ATK: {player.stats['atk']}    DEF: {player.stats['def']}\n"
+        f"MAT: {player.stats['matk']}    MDF: {player.stats['mdef']}\n"
+        f"SPD: {player.stats['speed']}    CRT: {player.stats['critCh']}\n"
+        f"############################\n"
+        "#        APTITUDES         #\n"
+        f"############################\n"
+        f"STR: {player.aptitudes['str']}    DEX: {player.aptitudes['dex']}\n"
+        f"INT: {player.aptitudes['int']}    WIS: {player.aptitudes['wis']}\n"
+        f"CONST: {player.aptitudes['const']}\n"
+        f"############################\n"
+        f"\033[33mMONEY: {player.money}\033[0m\n"
+        f"############################\n"
+        "#        EQUIPMENT         #\n"
+        f"############################"
+    )
+    print(stats_template)
+
+    for slot, item in player.equipment.items():
+        print(f"{slot}: {item.name if item else ''}")
 
 def showAptitudes(player):
     print('############################')

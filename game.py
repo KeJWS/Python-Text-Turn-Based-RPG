@@ -4,25 +4,26 @@
 import sys
 import random
 import text, player, items, events
+import os
+
+def clear_screen():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 ##### 标题画面 #####
 def title_screen_selections():
     '''
     标题画面的选项，包括开始游戏、获取帮助或退出。
     '''
-    alive = True
-    while alive:
+    options = {'1': play, '2': text.about_menu, '3': sys.exit}
+    while True:
         text.title_screen()
         option = input("> ")
-        while option not in ['1', '2', '3']:
-            print("请输入有效的指令")
-            option = input("> ")
-        if option == '1':
-            alive = play()
-        elif option == '2':
-            text.about_menu()
-        elif option == '3':
-            sys.exit()
+        if option in options:
+            clear_screen()
+            print(f"[DEBUG] 选择了选项: {option}")
+            return options[option]()
+        clear_screen()
+        print("请输入有效的指令")
 
 ##### 背包菜单 #####
 def inventory_selections(player):
@@ -33,17 +34,14 @@ def inventory_selections(player):
     player : Player
         需要访问其背包的玩家。
     '''
-    option = input("> ")
-    while option.lower() != 'q':
-        if option.lower() == 'u':
-            player.use_item(player.inventory.use_item())
-        elif option.lower() == 'd':
-            player.inventory.drop_item()
-        elif option.lower() == 'e':
-            player.equip_item(player.inventory.equip_item())
-        else:
-            pass
-        option = input("> ")
+    actions = {'u': lambda: player.use_item(player.inventory.use_item()),
+               'd': player.inventory.drop_item,
+               'e': lambda: player.equip_item(player.inventory.equip_item())}
+    while (option := input("> ").lower()) != 'q':
+        clear_screen()
+        print(f"[DEBUG] 背包选项: {option}")
+        print("u - 使用物品, d - 丢弃物品, e - 装备武具, q - 退出")
+        actions.get(option, lambda: None)()
 
 ##### 初始化函数 #####
 def play():
@@ -54,32 +52,32 @@ def play():
     alive : bool
         当游戏结束（玩家死亡）时返回False。
     '''
-    # 玩家实例化
+    print("[DEBUG] 游戏开始")
     myPlayer = player.Player("测试玩家")
-
     give_initial_items(myPlayer)
-
-    # 事件发生几率（以%计算）
-    combat_chance = 65
-    shop_chance = 20
-    heal_chance = 15
-
+    event_chances = (65, 20, 15)  # 战斗、商店、治疗的概率
     while myPlayer.alive:
         text.play_menu()
         option = input("> ")
         if option == '1':
-            generate_event(myPlayer, combat_chance, shop_chance, heal_chance)
+            clear_screen()
+            generate_event(myPlayer, *event_chances)
         elif option == '2':
+            clear_screen()
             text.showStats(myPlayer)
         elif option == '3':
+            clear_screen()
             myPlayer.assign_aptitude_points()
         elif option == '4':
+            clear_screen()
             text.inventory_menu()
             myPlayer.inventory.show_inventory()
             inventory_selections(myPlayer)
         elif option == '5':
+            clear_screen()
             myPlayer.show_quests()
         else:
+            clear_screen()
             print("请输入有效的指令")
     return False
 
@@ -92,20 +90,16 @@ def give_initial_items(myPlayer):
         需要给予初始物品的玩家。
     '''
     print(text.initial_event_text)
-    option = str(input("> "))
-    while option not in ['1', '2', '3']:
-        option = str(input("> "))
-    if option == '1':
-        items.rustySword.add_to_inventory_player(myPlayer.inventory)
-        items.noviceArmor.add_to_inventory_player(myPlayer.inventory)
-    elif option == '2':
-        items.brokenDagger.add_to_inventory_player(myPlayer.inventory)
-        items.noviceArmor.add_to_inventory_player(myPlayer.inventory)
-    elif option == '3':
-        items.oldStaff.add_to_inventory_player(myPlayer.inventory)
-        items.oldRobes.add_to_inventory_player(myPlayer.inventory)
-        items.grimoireFireball.add_to_inventory_player(myPlayer.inventory)
-    print('[ 请记得在背包中装备这些物品 > 装备物品 ]')
+    items_map = {'1': [items.rustySword, items.noviceArmor],
+                 '2': [items.brokenDagger, items.noviceArmor],
+                 '3': [items.oldStaff, items.oldRobes, items.grimoireFireball]}
+    while (option := input("> ")) not in items_map:
+        pass
+    clear_screen()
+    print(f"[DEBUG] 选择了初始装备: {option}")
+    for item in items_map[option]:
+        item.add_to_inventory_player(myPlayer.inventory)
+    print('[ \033[31m请记得在背包中装备这些物品\033[0m ]')
 
 def generate_event(myPlayer, combat_chance, shop_chance, heal_chance):
     '''
@@ -122,21 +116,17 @@ def generate_event(myPlayer, combat_chance, shop_chance, heal_chance):
     heal_chance : int
         生成治疗事件的几率（%）
     '''
-    eventList = random.choices(events.event_type_list, weights=(combat_chance, shop_chance, heal_chance), k=1)
-    # random.choices 返回一个列表，因此需要使用 eventList[0]
-    event = random.choice(eventList[0])
+    event = random.choice(random.choices(events.event_type_list, weights=(combat_chance, shop_chance, heal_chance), k=1)[0])
+    print(f"[DEBUG] 触发的事件: {event.name}")
     event.effect(myPlayer)
-    # TODO: 可能有更简单的方法处理此逻辑。
     if event.isUnique:
         for evList in events.event_type_list:
-            for e in evList:
-                if e.name == event.name:
-                    for quest in myPlayer.activeQuests:
-                        if quest.event == event:
-                            quest.complete_quest(myPlayer)
-                    evList.remove(event)
-                    break
-
+            if event in evList:
+                for quest in myPlayer.activeQuests:
+                    if quest.event == event:
+                        quest.complete_quest(myPlayer)
+                evList.remove(event)
+                break
 
 if __name__ == "__main__":
     title_screen_selections()
