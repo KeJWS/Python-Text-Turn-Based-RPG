@@ -3,13 +3,13 @@ import random
 
 class Shop():
     '''
-    Handles shop management.
+    处理商店管理。
 
     Attributes:
     itemSet : List
-        Item pool the shop can have.
+        商店可以拥有的物品池。
     inventory : Inventory
-        Shop's inventory
+        商店的库存
     '''
     def __init__(self, itemSet) -> None:
         self.itemSet = itemSet
@@ -18,7 +18,7 @@ class Shop():
 
     def add_items_to_inventory_shop(self):
         '''
-        Adds new items to the shop's inventory.
+        将新物品添加到商店的库存中。
         '''
         itemQuantity = random.randint(len(self.itemSet)//2, len(self.itemSet))
         for _ in range(itemQuantity):

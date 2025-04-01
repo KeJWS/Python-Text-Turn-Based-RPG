@@ -1,50 +1,78 @@
 import inventory
 import skills
+import yaml
 
-# Starting Items
-# -> Starting Weapons
-rustySword = inventory.Equipment('Rusty Sword', '', 1, 6, 'Weapon', {'atk' : 3}, None)
-brokenDagger = inventory.Equipment('Broken Dagger', '', 1, 6, 'Weapon', {'atk' : 1, 'critCh': 5, 'speed' : 1}, None)
-oldStaff = inventory.Equipment('Old Staff', '', 1, 6, 'Weapon', {'matk' : 1, 'maxMp' : 2}, None)
-# -> Starting Armor
-noviceArmor = inventory.Equipment('Novice Armor', '', 1, 10, 'Armor', {'maxHp' : 1, 'def' : 3, 'speed' : 1}, None)
-oldRobes = inventory.Equipment('Old Robes', '', 1, 10, 'Armor', {'maxHp' : 1, 'def' : 1, 'mdef' : 2, 'maxMp' : 2}, None)
+with open("items.yaml", "r", encoding="utf-8") as file:
+    items = yaml.safe_load(file)
 
-# Basic Items
-# -> Basic Weapons
-longsword = inventory.Equipment('Longsword', '', 1, 19, 'Weapon', {'atk' : 6, 'def' : 2}, skills.comboSlash1)
-dagger = inventory.Equipment('Dagger', '', 1, 15, 'Weapon', {'atk' : 4, 'critCh' : 10, 'speed': 2}, skills.comboVampireStab1)
-staff = inventory.Equipment('Staff', '', 1, 18, 'Weapon', {'atk' : 2, 'matk' : 3, 'maxMp' : 4}, skills.comboMeditation1)
-# -> Basic Armor
-clothArmor = inventory.Equipment('Cloth Armor', '', 1, 18, 'Armor', {'maxHp' : 3, 'def' : 3, 'speed' : 2}, None)
-bronzeArmor = inventory.Equipment('Bronze Armor', '', 1, 25, 'Armor', {'maxHp' : 4, 'def' : 5}, None)
-studentRobes = inventory.Equipment('Student Robes', '', 1, 25, 'Armor', {'maxHp' : 3, 'def' : 3, 'mdef' : 3, 'maxMp' : 4}, None)
+def get_equipment_by_id(equipment_list, item_id):
+    for item in equipment_list:
+        if item["id"] == item_id:
+            # 动态查找该技能对象
+            combo_object = getattr(skills, item["combo"], None)
+            
+            return (
+                item["name"], 
+                item["description"], 
+                item["amount"], 
+                item["individual_value"], 
+                item["objectType"], 
+                item["statChangeList"], 
+                combo_object
+            )
+    return None
 
-# Advanced Items
-# -> Advanced Weapons
-warhammer = inventory.Equipment('Warhammer', '', 1, 72, 'Weapon', {'atk' : 12, 'speed' : -2}, skills.comboArmorBreaker1)
-zweihander = inventory.Equipment('Zweihander', '', 1, 75, 'Weapon', {'atk' : 9, 'def' : 2}, skills.comboSlash2)
-sageStaff = inventory.Equipment('Sage Staff', '', 1, 70, 'Weapon', {'atk' : 4, 'matk' : 9, 'maxMp' : 5}, skills.comboMeditation2)
-sai = inventory.Equipment('Sai', '', 1, 70, 'Weapon', {'atk' : 7, 'critCh' : 20, 'speed' : 3}, skills.comboVampireStab2)
+# 读取所有装备，使用 id 作为 key
+equipment_objects = {
+    item["id"]: inventory.Equipment(*get_equipment_by_id(items["Equipment"], item["id"]))
+    for item in items["Equipment"]
+}
 
-# -> Advanced Armor
-ironArmor = inventory.Equipment('Iron Armor', '', 1, 85, 'Armor', {'maxHp' : 8, 'def' : 10}, None)
-sageTunic = inventory.Equipment('Sage Tunic', '', 1, 85, 'Armor', {'maxHp' : 4, 'def': 4, 'mdef':7, 'maxMp': 10}, None)
-thiefArmor = inventory.Equipment('Thief Armor', '', 1, 80, 'Armor', {'maxHp' : 5, 'def' : 6, 'speed' : 3}, None)
+# 初始物品
+# -> 初始武器
+rustySword = equipment_objects[1]
+brokenDagger = equipment_objects[2]
+oldStaff = equipment_objects[3]
+# -> 初始盔甲
+noviceArmor = equipment_objects[4]
+oldRobes = equipment_objects[5]
 
-# Consumables
-hpPotion = inventory.Potion('Health Potion', 'a', 1, 10, 'Consumable', 'hp', 15)
-mpPotion = inventory.Potion('Mana Potion', 'a', 1, 10, 'Consumable', 'mp', 15)
+# 基础物品
+# -> 基础武器
+# longsword = inventory.Equipment('长剑', '', 1, 19, 'Weapon', {'atk' : 6, 'def' : 2}, skills.comboSlash1)
+longsword = equipment_objects[6]
+dagger = equipment_objects[7]
+staff = equipment_objects[8]
+# -> 基础盔甲
+clothArmor = equipment_objects[9]
+bronzeArmor = equipment_objects[10]
+studentRobes = equipment_objects[11]
 
-# Grimoires
-grimoireFireball = inventory.Grimoire('Grimoire: Fireball', '', 1, 20, 'Consumable', skills.spellFireball)
-grimoireDivineBlessing = inventory.Grimoire('Grimoire: Divine Blessing', '', 1, 20, 'Consumable', skills.spellDivineBlessing)
-grimoireEnhanceWeapon = inventory.Grimoire('Grimoire: Enhance Weapon', '', 1, 25, 'Consumable', skills.spellEnhanceWeapon)
-grimoireInferno = inventory.Grimoire('Grimoire: Inferno', '', 1, 50, 'Consumable', skills.spellInferno)
-grimoireSummonSkeleton = inventory.Grimoire('Grimoire: Summon Skeleton', '', 1, 30, 'Consumable', skills.spellSkeletonSummoning)
-grimoireSummonFireSpirit = inventory.Grimoire('Grimoire: Fire Spirit', '', 1, 60, 'Consumable', skills.spellFireSpiritSummonning)
+# 高级物品
+# -> 高级武器
+warhammer = inventory.Equipment('战锤', '', 1, 72, 'Weapon', {'atk' : 12, 'speed' : -2}, skills.comboArmorBreaker1)
+zweihander = inventory.Equipment('双手剑', '', 1, 75, 'Weapon', {'atk' : 9, 'def' : 2}, skills.comboSlash2)
+sageStaff = inventory.Equipment('智者法杖', '', 1, 70, 'Weapon', {'atk' : 4, 'matk' : 9, 'maxMp' : 5}, skills.comboMeditation2)
+sai = inventory.Equipment('三叉戟', '', 1, 70, 'Weapon', {'atk' : 7, 'critCh' : 20, 'speed' : 3}, skills.comboVampireStab2)
 
-# Shop Item Sets
+# -> 高级盔甲
+ironArmor = inventory.Equipment('铁甲', '', 1, 85, 'Armor', {'maxHp' : 8, 'def' : 10}, None)
+sageTunic = inventory.Equipment('智者上衣', '', 1, 85, 'Armor', {'maxHp' : 4, 'def': 4, 'mdef':7, 'maxMp': 10}, None)
+thiefArmor = inventory.Equipment('盗贼盔甲', '', 1, 80, 'Armor', {'maxHp' : 5, 'def' : 6, 'speed' : 3}, None)
+
+# 消耗品
+hpPotion = inventory.Potion('治疗药水', 'a', 1, 10, 'Consumable', 'hp', 15)
+mpPotion = inventory.Potion('法力药水', 'a', 1, 10, 'Consumable', 'mp', 15)
+
+# 法典
+grimoireFireball = inventory.Grimoire('法典：火球术', '', 1, 20, 'Consumable', skills.spellFireball)
+grimoireDivineBlessing = inventory.Grimoire('法典：神圣祝福', '', 1, 20, 'Consumable', skills.spellDivineBlessing)
+grimoireEnhanceWeapon = inventory.Grimoire('法典：增强武器', '', 1, 25, 'Consumable', skills.spellEnhanceWeapon)
+grimoireInferno = inventory.Grimoire('法典：地狱火', '', 1, 50, 'Consumable', skills.spellInferno)
+grimoireSummonSkeleton = inventory.Grimoire('法典：召唤骷髅', '', 1, 30, 'Consumable', skills.spellSkeletonSummoning)
+grimoireSummonFireSpirit = inventory.Grimoire('法典：火焰精灵', '', 1, 60, 'Consumable', skills.spellFireSpiritSummonning)
+
+# 商店商品套装
 
 rik_armor_shop_item_set = [ longsword, 
                             dagger, 

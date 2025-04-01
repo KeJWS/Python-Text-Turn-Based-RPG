@@ -1,21 +1,21 @@
-# Python Text-Based RPG
+# Python文本冒险RPG
 # Pablo Rodríguez Martín - @rodmarkun
 
 import sys
 import random
 import text, player, items, events
 
-##### Title Screen #####
+##### 标题画面 #####
 def title_screen_selections():
     '''
-    Title screen selections with options to Play, get Help or Exit.
+    标题画面的选项，包括开始游戏、获取帮助或退出。
     '''
     alive = True
     while alive:
         text.title_screen()
         option = input("> ")
-        while option not in ['1','2','3']:
-            print("Please enter a valid command")
+        while option not in ['1', '2', '3']:
+            print("请输入有效的指令")
             option = input("> ")
         if option == '1':
             alive = play()
@@ -24,14 +24,14 @@ def title_screen_selections():
         elif option == '3':
             sys.exit()
 
-##### Inventory menu #####
+##### 背包菜单 #####
 def inventory_selections(player):
     '''
-    Inventory menu, for using, dropping or equipping items.
+    背包菜单，用于使用、丢弃或装备物品。
 
     Parameters:
     player : Player
-        Player which inventory is to be accessed.
+        需要访问其背包的玩家。
     '''
     option = input("> ")
     while option.lower() != 'q':
@@ -45,21 +45,21 @@ def inventory_selections(player):
             pass
         option = input("> ")
 
-##### Initializing function #####
+##### 初始化函数 #####
 def play():
     '''
-    Main function for playing the game.
+    主函数，用于进行游戏。
 
     Returns:
     alive : bool
-        False when the game ends (player dies)
+        当游戏结束（玩家死亡）时返回False。
     '''
-    # Player instantiation
-    myPlayer = player.Player("Test Player")
+    # 玩家实例化
+    myPlayer = player.Player("测试玩家")
 
     give_initial_items(myPlayer)
 
-    # Event chances (in %)
+    # 事件发生几率（以%计算）
     combat_chance = 65
     shop_chance = 20
     heal_chance = 15
@@ -80,16 +80,16 @@ def play():
         elif option == '5':
             myPlayer.show_quests()
         else:
-            print("Please enter a valid command")
+            print("请输入有效的指令")
     return False
 
 def give_initial_items(myPlayer):
     '''
-    Gives the player its initial items based on a choice.
+    根据选择给予玩家初始物品。
 
     Parameters:
     myPlayer : Player
-        Player to give the initial items to.
+        需要给予初始物品的玩家。
     '''
     print(text.initial_event_text)
     option = str(input("> "))
@@ -105,28 +105,28 @@ def give_initial_items(myPlayer):
         items.oldStaff.add_to_inventory_player(myPlayer.inventory)
         items.oldRobes.add_to_inventory_player(myPlayer.inventory)
         items.grimoireFireball.add_to_inventory_player(myPlayer.inventory)
-    print('[ Remember to equip these items in Inventory > Equip Items ]')
+    print('[ 请记得在背包中装备这些物品 > 装备物品 ]')
 
 def generate_event(myPlayer, combat_chance, shop_chance, heal_chance):
     '''
-    Generates a random event for the player based on specified chances.
-    Also handles quest completion.
+    根据指定几率生成随机事件。
+    还处理任务完成。
 
     Parameters:
     myPlayer : Player
-        Player affected by the event
+        受事件影响的玩家
     combat_chance : int
-        Chance to generate a combat event in %
+        生成战斗事件的几率（%）
     shop_chance : int
-        Chance to generate a shop event in %
+        生成商店事件的几率（%）
     heal_chance : int
-        Chance to generate a healing event in %
+        生成治疗事件的几率（%）
     '''
     eventList = random.choices(events.event_type_list, weights=(combat_chance, shop_chance, heal_chance), k=1)
-    # random.choices returns a list so we need to use eventList[0]
+    # random.choices 返回一个列表，因此需要使用 eventList[0]
     event = random.choice(eventList[0])
     event.effect(myPlayer)
-    # TODO: There must be an easier way to do this.
+    # TODO: 可能有更简单的方法处理此逻辑。
     if event.isUnique:
         for evList in events.event_type_list:
             for e in evList:

@@ -1,0 +1,12 @@
+id,name,description,amount,individual_value,objectType,combo,statChangeList
+1,生锈的剑,,1,6,Weapon,None,{'atk': 3}
+2,破损的匕首,,1,6,Weapon,None,"{'atk': 1, 'critCh': 5, 'speed': 1}"
+3,旧法杖,,1,6,Weapon,None,"{'matk': 1, 'maxMp': 2}"
+4,新手盔甲,,1,10,Armor,None,"{'maxHp': 1, 'def': 3, 'speed': 1}"
+5,旧长袍,,1,10,Armor,None,"{'maxHp': 1, 'def': 1, 'mdef': 2, 'maxMp': 2}"
+6,长剑,,1,19,Weapon,comboSlash1,"{'atk': 6, 'def': 2}"
+7,匕首,,1,15,Weapon,comboVampireStab1,"{'atk': 4, 'critCh': 10, 'speed': 2}"
+8,法杖,,1,18,Weapon,comboMeditation1,"{'atk': 2, 'matk': 3, 'maxMp': 4}"
+9,布甲,,1,18,Armor,None,"{'maxHp': 3, 'def': 3, 'speed': 2}"
+10,青铜盔甲,,1,25,Armor,None,"{'maxHp': 4, 'def': 5}"
+11,学者长袍,,1,25,Armor,None,"{'maxHp': 3, 'def': 3, 'mdef': 3, 'maxMp': 4}"

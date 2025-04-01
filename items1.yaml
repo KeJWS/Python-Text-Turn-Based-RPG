@@ -1,0 +1,60 @@
+# 初始物品
+# -> 初始武器
+Equipment:
+  - id: 1
+    name: 生锈的剑
+    description: ''
+    amount: 1
+    individual_value: 6
+    objectType: 'Weapon'
+    statChangeList:
+      atk: 3
+    combo: None
+
+  - id: 2
+    name: 破损的匕首
+    description: ''
+    amount: 1
+    individual_value: 6
+    objectType: 'Weapon'
+    statChangeList: {'atk' : 1, 'critCh': 5, 'speed' : 1}
+    combo: None
+
+  - id: 3
+    name: 旧法杖
+    description: ''
+    amount: 1
+    individual_value: 6
+    objectType: 'Weapon'
+    statChangeList: {'matk' : 1, 'maxMp' : 2}
+    combo: None
+
+# -> 初始盔甲
+  - id: 4
+    name: 新手盔甲
+    description: ''
+    amount: 1
+    individual_value: 10
+    objectType: 'Armor'
+    statChangeList: {'maxHp' : 1, 'def' : 3, 'speed' : 1}
+    combo: None
+
+  - id: 5
+    name: 旧长袍
+    description: ''
+    amount: 1
+    individual_value: 10
+    objectType: 'Armor'
+    statChangeList: {'maxHp' : 1, 'def' : 1, 'mdef' : 2, 'maxMp' : 2}
+    combo: None
+
+# 基础物品
+# -> 基础武器
+  - id: 6
+    name: 长剑
+    description: ''
+    amount: 1
+    individual_value: 19
+    objectType: 'Weapon'
+    statChangeList: {'atk' : 6, 'def' : 2}
+    combo: comboSlash1

@@ -10,13 +10,13 @@ def title_screen():
     print('############################')
 
 def about_menu():
-    print(f'Python Text Turn-Based RPG System v{VERSION}')
-    print('Made by Pablo Rodríguez Martín (@rodmarkun)')
-    print('\nHello there! What lies before your eyes is an attempt of making a functional\
-\nturn-based RPG completely in Python. Keep in mind that it is more about making a system rather than a whole game.')
-    print('You can battle enemies, purchase items from shops, complete quests, learn spells\
-\nand combos...')
-    print('\nI highly recommend checking the code and modifying whatever you want. Have fun!')
+    print(f'Python 文字回合制 RPG 系统 v{VERSION}')
+    print('作者：Pablo Rodríguez Martín (@rodmarkun)')
+    print('\n你好！你眼前所见的是一个使用 Python 语言构建的回合制 RPG 系统。\
+\n请注意，这更侧重于构建一个系统，而非完整的游戏。')
+    print('你可以与敌人战斗，从商店购买道具，完成任务，学习法术和连招……')
+    print('\n强烈推荐你查看代码，并根据需要进行修改。祝你玩得开心！')
+
 
 def play_menu():
     print('############################')   
@@ -145,56 +145,57 @@ def enter_shop(name):
     elif name == 'Itz Magic':
         print(itz_magic_encounter)
     
-### Events' text
+### 事件文本
 
-# Initial event
-initial_event_text = 'This is finally the day. You have registered your name in the Adventurers Guild.\n\
-As a gift, they let you choose between three sets of gear. Which one do you choose?\n\
-1 - Warrior Set\n\
-2 - Rogue Set\n\
-3 - Magic Set'
+# 初始事件
+initial_event_text = '这一天终于到来了。你已在冒险者公会登记了自己的姓名。\n\
+作为礼物，他们允许你从三套装备中选择一套。你会选择哪一套？\n\
+1 - 战士套装\n\
+2 - 盗贼套装\n\
+3 - 魔法师套装'
 
-## Shops
+## 商店
 
-# Rik's armor shop
-rik_armor_shop_encounter = 'Wandering around a small village, you find yourself in front of a shop.\n \
-There is a sign on the door. It says: <Rik\'s Armor Shop>. \n\
-Enter? [y/n]'
-rik_armor_shop_enter = '\"Hello there, friend! What do you need?\" a big and strong man asks.'
-rik_armor_shop_talk = '' # Talk dialogue
-rik_armor_shop_exit = 'You leave the village in search for more adventures.'
+# Rik 的护甲店
+rik_armor_shop_encounter = '在一个小村庄四处游荡时，你发现自己站在一家店铺前。\n\
+门上挂着一块招牌，上面写着：<Rik 的护甲店>。\n\
+要进入吗？[y/n]'
+rik_armor_shop_enter = '“你好，朋友！你需要点什么？” 一个身材魁梧的男子问道。'
+rik_armor_shop_talk = '' # 交谈内容
+rik_armor_shop_exit = '你离开了村庄，继续踏上冒险之旅。'
 
-#Itz Magic
-itz_magic_encounter = 'You stumble upon a swamp. Looking around, you find a small hut.\n\
-There is a sign on the door. It says <Itz\'s Magic Shop>\n\
-Enter? [y/n]'
-itz_magic_enter = 'Inside is a short woman with big glasses. She seems to be a witch. \n\
-She whispers:\"Well, well, what do we have here?... Come, take a look!\"'
-itz_magic_talk = '' # Talk dialogue
-itz_magic_exit = 'You leave the swamp, continuing your journey.'
+# Itz 的魔法店
+itz_magic_encounter = '你误入了一片沼泽。环顾四周，你发现一座小屋。\n\
+门上挂着一块招牌，上面写着：<Itz 的魔法店>。\n\
+要进入吗？[y/n]'
+itz_magic_enter = '屋内站着一位戴着厚重眼镜的矮小女子，她看上去像是一位女巫。\n\
+她低声呢喃道：“哦？看看是谁来了……来吧，随意看看！”'
+itz_magic_talk = '' # 交谈内容
+itz_magic_exit = '你离开了沼泽，继续踏上旅程。'
 
-## Healing
 
-# Medussa Statue
-medussa_statue_encounter = 'On the top of a hill, you find what seems to be a small shrine. \n\
-There is a statue of a goddess forgotten long ago. \n\
-Not knowing exactly why, you feel the urge to pay respects. \n\
-Kneel before it? [y/n]'
-medussa_statue_success = 'You feel a pleasant warmth inside you.'
-medussa_statue_fail = 'Nothing happens. It was probably just your imagination.'
-medussa_statue_refuse = 'You decide not to kneel.'
+## 治疗
 
-# Inn encounter
-inn_event_encounter = 'While travelling across a forest, you find an Inn.\n\
-You can rest here, but it won\'t be free.\n\
-Pay 15G for one night? [y/n]'
-inn_event_success = 'You rest in a comfortable bed tonight.'
-inn_event_fail = 'You do not have enough money.'
-inn_event_refuse = 'You decide not to pay.'
+# 美杜莎神像
+medussa_statue_encounter = '在一座山丘的顶端，你发现了一座小型神殿。\n\
+这里矗立着一尊古老而被遗忘的女神雕像。\n\
+不知为何，你心生敬意，想要向它致敬。\n\
+要跪拜吗？[y/n]'
+medussa_statue_success = '你感受到一股温暖的力量流遍全身。'
+medussa_statue_fail = '什么也没有发生，或许只是你的错觉。'
+medussa_statue_refuse = '你决定不跪拜。'
 
-## Quests
-quest_caesarus_bandit_text = 'That Caesarus and his bandits have been causing\n\
-trouble to nearby villages. Take care of them.'
-shop_quest_caesarus_bandits = 'Have you heard about the bandits? They have been terrorizing\n\
-villages from around here. A guy named Caesarus leads them. If you take care of them,\n\
-maybe the villagers would reward you or something. '
+# 客栈事件
+inn_event_encounter = '在穿越森林的途中，你发现了一家客栈。\n\
+你可以在这里休息，但需要支付一定的费用。\n\
+支付 15G 住一晚吗？[y/n]'
+inn_event_success = '你在柔软舒适的床上安然入睡。'
+inn_event_fail = '你的钱不够。'
+inn_event_refuse = '你决定不支付住宿费。'
+
+## 任务
+quest_caesarus_bandit_text = '凯撒鲁斯和他的匪徒一直在\n\
+骚扰附近的村庄。去解决他们吧。'
+shop_quest_caesarus_bandits = '听说过那群强盗吗？他们一直在恐吓\n\
+这一带的村庄。一个叫凯撒鲁斯的家伙是他们的首领。\n\
+如果你能解决他们，也许村民会给你一些报酬。'
