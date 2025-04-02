@@ -4,10 +4,8 @@
 import sys
 import random
 import text, player, items, events
-import os
 
-def clear_screen():
-    os.system('cls' if os.name == 'nt' else 'clear')
+from test.clear_screen import clear_screen
 
 ##### 标题画面 #####
 def title_screen_selections():

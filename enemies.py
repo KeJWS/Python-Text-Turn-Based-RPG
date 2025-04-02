@@ -2,7 +2,7 @@ from random import randint
 import combat
 
 '''
-Enemy class definitions, specially for custom stats and rewards.
+敌人等级定义，专门用于自定义统计和奖励。
 '''
 
 class Imp(combat.Enemy):
@@ -18,7 +18,7 @@ class Imp(combat.Enemy):
                     'speed': 9,
                     'critCh': 5
         }
-        super().__init__('Imp', stats, xpReward=8, goldReward=randint(3, 6))
+        super().__init__('小鬼', stats, xpReward=8, goldReward=randint(3, 6))
 
 class Slime(combat.Enemy):
     def __init__(self) -> None:
@@ -33,7 +33,7 @@ class Slime(combat.Enemy):
                     'speed': 3,
                     'critCh': 0
         }
-        super().__init__('Slime', stats, xpReward=6, goldReward=randint(1, 6))
+        super().__init__('史莱姆', stats, xpReward=6, goldReward=randint(1, 6))
 
 class Golem(combat.Enemy):
     def __init__(self) -> None:
@@ -48,7 +48,7 @@ class Golem(combat.Enemy):
                     'speed': 4,
                     'critCh': 0
         }
-        super().__init__('Golem', stats, xpReward=15, goldReward=randint(6, 15))
+        super().__init__('魔像', stats, xpReward=15, goldReward=randint(6, 15))
 
 class GiantSlime(combat.Enemy):
     def __init__(self) -> None:
@@ -63,7 +63,7 @@ class GiantSlime(combat.Enemy):
                     'speed': 2,
                     'critCh': 0
         }
-        super().__init__('Giant Slime', stats, xpReward=30, goldReward=randint(3, 12))
+        super().__init__('巨型史莱姆', stats, xpReward=30, goldReward=randint(3, 12))
 
 class Bandit(combat.Enemy):
     def __init__(self) -> None:
@@ -78,7 +78,7 @@ class Bandit(combat.Enemy):
                     'speed': 10,
                     'critCh': 15
         }
-        super().__init__('Bandit', stats, xpReward=30, goldReward=randint(10, 15))
+        super().__init__('土匪', stats, xpReward=30, goldReward=randint(10, 15))
 
 class CaesarusBandit(combat.Enemy):
     def __init__(self) -> None:
@@ -93,14 +93,14 @@ class CaesarusBandit(combat.Enemy):
                     'speed': 14,
                     'critCh': 15
         }
-        super().__init__('Caesarus, bandit leader', stats, xpReward=200, goldReward=randint(40, 60))
+        super().__init__('凯撒鲁斯，土匪头目', stats, xpReward=200, goldReward=randint(40, 60))
 
-# Possible Enemy: (LowestPlayerLevelForAppearing, HighestPlayerLevelForAppearing)
+# 可能的敌人：（出现的最低玩家等级，出现的最高玩家等级）
 possible_enemies = {Slime: (1, 2),
                     Imp: (1, 4),
                     Golem: (3, 10),
                     GiantSlime: (4, 100),
                     Bandit: (4, 100)}
 
-# Fixed Combat Enemies
+# 固定战斗敌人
 enemy_list_caesarus_bandit = [CaesarusBandit(), Bandit(), Bandit()]

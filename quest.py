@@ -1,26 +1,26 @@
 class Quest():
     '''
-    Defines quests and handles their activation, completion, rewards.
+    定义任务，并处理任务的激活、完成和奖励发放。
 
     Attributes:
     name : str
-        Quest's name.
+        任务名称。
     description : str
-        Quest's description.
+        任务描述。
     proposalText : str
-        Text for when the quest is proposed.
+        任务发布时的文本信息。
     xpReward : int
-        Amount of xp to give when quest is completed.
+        任务完成后获得的经验值奖励。
     goldReward : int
-        Amount of gold to give when quest is completed.
+        任务完成后获得的金币奖励。
     itemReward : Item
-        Item to give when quest is completed.
+        任务完成后获得的物品奖励。
     status : str
-        Current quest's status
+        当前任务的状态。
     event : Event
-        Event the quest triggers.
+        任务触发的事件。
     recommendedLvl : int
-        Recommended level for this quest.
+        建议完成该任务的等级。
     '''
     def __init__(self, name, description, proposalText, xpReward, goldReward, itemReward, event, recommendedLvl) -> None:
         self.name = name
@@ -28,7 +28,7 @@ class Quest():
         self.xpReward = xpReward
         self.goldReward = goldReward
         self.itemReward = itemReward
-        # TODO: Change way the quest's status is handled
+        # TODO: 修改任务状态的处理方式
         self.status = 'Not Active'
         self.event = event
         self.proposalText = proposalText
@@ -36,10 +36,10 @@ class Quest():
 
     def activate_quest(self, player):
         '''
-        Activates the quest and appends itself to player's active quests list.
+        激活任务，并将其添加到玩家的进行中任务列表。
 
         player : Player
-            Player that activated the quest.
+            触发该任务的玩家。
         '''
         if self.status == 'Not Active':
             self.status = 'Active'
@@ -48,11 +48,10 @@ class Quest():
 
     def complete_quest(self, player):
         '''
-        Completes the quest, appends itself to player's completed quests list and removes itself from
-        active quests list. Also gives rewards. 
+        完成任务，将其从进行中任务列表移除，并加入已完成任务列表。同时给予奖励。
 
         player : Player
-            Player that completed the quest.
+            完成任务的玩家。
         '''
         if self.status == 'Active':
             self.status = 'Completed'
@@ -62,12 +61,12 @@ class Quest():
 
     def show_info(self):
         '''
-        Displays all info of this quest.
+        显示该任务的详细信息。
         '''
         print(f'\n - {self.name} - ')
-        print(f'Recommended level: {self.recommendedLvl}')
+        print(f'建议等级: {self.recommendedLvl}')
         print(self.description)
-        print('Rewards:')
+        print('奖励:')
         if self.xpReward > 0:
             print(f'XP: {self.xpReward}')
         if self.goldReward > 0:
@@ -78,13 +77,13 @@ class Quest():
 
     def give_rewards(self, player):
         '''
-        Gives quest's rewards to a certain player.
+        给予玩家任务奖励。
 
         Parameters:
         player : Player
-            Player to be rewarded.
+            领取奖励的玩家。
         '''
-        print(f'\"{self.name}\" quest completed. You earn {self.xpReward}xp and {self.goldReward}G')
+        print(f'任务 \"{self.name}\" 已完成。你获得 {self.xpReward} 经验值 和 {self.goldReward} 金币')
         if self.xpReward > 0:
             player.add_exp(self.xpReward)
         if self.goldReward > 0:
@@ -94,14 +93,14 @@ class Quest():
     
     def propose_quest(self, player):
         '''
-        Proposes the quest to a certain player. They can accept it or decline it.
+        向玩家发布任务，玩家可以选择接受或拒绝。
 
         Parameters:
         player : Player
-            Player to propose the quest to.
+            被提议任务的玩家。
         '''
         print(self.proposalText)
-        print('Accept? [y/n] (Recommended level: {})'.format(self.recommendedLvl))
+        print(f'是否接受？ [y/n] (建议等级: {self.recommendedLvl})')
         option = input("> ").lower()
         while option not in ['y', 'n']:
             option = input("> ").lower()

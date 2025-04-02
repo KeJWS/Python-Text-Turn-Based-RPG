@@ -20,7 +20,7 @@ class SummonedSkeleton(combat.Battler):
                     'speed': 7,
                     'critCh': 5
         }
-        super().__init__('Skeleton', stats)
+        super().__init__('小骨', stats)
         self.isAlly = True
 
 class SummonedFireSpirit(combat.Battler):
@@ -36,5 +36,5 @@ class SummonedFireSpirit(combat.Battler):
                     'speed': 9,
                     'critCh': 5
         }
-        super().__init__('Fire Spirit', stats)
+        super().__init__('火精灵', stats)
         self.isAlly = True

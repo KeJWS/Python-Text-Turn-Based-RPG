@@ -1,8 +1,5 @@
-from constants import VERSION
-import os
-
-def clear_screen():
-    os.system('cls' if os.name == 'nt' else 'clear')
+from test.constants import VERSION
+from test.clear_screen import clear_screen
 
 def title_screen():
     print('############################')

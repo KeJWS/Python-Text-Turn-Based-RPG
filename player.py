@@ -39,17 +39,18 @@ class Player(combat.Battler):
     completedQuests: List
         已完成的任务列表。
     '''
+
+    XP_MULTIPLIER = 1.5 # 经验倍率
+    XP_BASE = 10 # 基础经验
+    STAT_INCREASE = 1 # 升级后可得能力点
+
     def __init__(self, name) -> None:
-        stats = {'maxHp': 25,
-                    'hp': 25,
-                    'maxMp': 10,
-                    'mp': 10,
-                    'atk': 10,
-                    'def': 10,
-                    'matk': 10,
-                    'mdef': 10,
-                    'speed': 10,
-                    'critCh': 10
+        stats = {
+            'maxHp': 25,    'hp': 25,
+            'maxMp': 10,    'mp': 10,
+            'atk': 10,      'def': 10,
+            'matk': 10,     'mdef': 10,
+            'speed': 10,    'critCh': 10
         }
 
         super().__init__(name, stats)
@@ -60,10 +61,9 @@ class Player(combat.Battler):
         # TODO: 需要更好的经验曲线
         self.xpToNextLvl = 35 # 升级所需经验值，每级乘以 1.5
         self.comboPoints = 0
-        self.aptitudes = {'str': 5,
-                    'dex': 5,
-                    'int': 5,
-                    'wis': 5,
+        self.aptitudes = {
+                    'str': 5,   'dex': 5,
+                    'int': 5,   'wis': 5,
                     'const': 5
         }
 
@@ -151,9 +151,9 @@ class Player(combat.Battler):
             self.xp -= self.xpToNextLvl
             self.lvl += 1
             # 经验需求计算公式，可调整
-            self.xpToNextLvl = round(self.xpToNextLvl * 1.5 + 10 * self.lvl * self.lvl)
+            self.xpToNextLvl = round(self.xpToNextLvl * self.XP_MULTIPLIER + self.XP_BASE * self.lvl * self.lvl)
             for stat in self.stats:
-                self.stats[stat] += 1
+                self.stats[stat] += self.STAT_INCREASE
             self.aptitudePoints += 1
             combat.fully_heal(self)
             combat.fully_recover_mp(self)
@@ -168,32 +168,26 @@ class Player(combat.Battler):
             要增加的金币数量。
         '''
         self.money += money
-        print(f"你获得了 \033[33m{money}\033[0m 枚金币")
+        print(f"你获得了 \033[33m{money}\033[0m 枚金币! (💰: \033[33m{self.money}\033[0m)")
 
     def assign_aptitude_points(self):
         '''
         能力点分配菜单。
         '''
-        optionsDictionary = {'1': 'str',
-                            '2': 'dex',
-                            '3': 'int',
-                            '4': 'wis',
-                            '5': 'const'}
+        options = {
+                    '1': 'str', '2': 'dex',
+                    '3': 'int', '4': 'wis',
+                    '5': 'const'}
         text.showAptitudes(self)
-        option = input("> ")
-        while option.lower() != 'q':
-            try:
-                if self.aptitudePoints >= 1:
-                    aptitudeToAssign = optionsDictionary[option]
-                    self.aptitudes[aptitudeToAssign] += 1
-                    print(f'{aptitudeToAssign} 现在是 {self.aptitudes[aptitudeToAssign]}!')
-                    self.update_stats_to_aptitudes(aptitudeToAssign)
-                    self.aptitudePoints -= 1
-                else:
-                    print('能力点不足！')
-            except:
-                print('请输入有效的编号')
-            option = input("> ")
+        while (option := input("> ").lower()) != 'q':
+            if self.aptitudePoints >= 1 and option in options:
+                aptitude = options[option]
+                self.aptitudes[aptitude] += 1
+                print(f'{aptitude} 现在是 {self.aptitudes[aptitude]}!')
+                self.update_stats_to_aptitudes(aptitude)
+                self.aptitudePoints -= 1
+            else:
+                print('无效选项或能力点不足！')
 
     def update_stats_to_aptitudes(self, aptitude):
         '''
@@ -225,15 +219,15 @@ class Player(combat.Battler):
         '''
         text.shop_buy(self)
         vendor.inventory.show_inventory()
-        i = int(input("> "))
-        while i != 0:
-            if i <= len(vendor.inventory.items) and i > 0:
+        while (i := int(input("> "))) != 0:
+            if 0 < i <= len(vendor.inventory.items):
                 vendor.inventory.items[i-1].buy(self)
                 if vendor.inventory.items[i-1].amount <= 0:
                     vendor.inventory.items.pop(i - 1)
                 vendor.inventory.show_inventory()
-                i = int(input("> "))
-        
+            else:
+                print("无效选项")
+
     def show_quests(self):
         '''
         显示当前任务，包括进行中的任务和已完成的任务。

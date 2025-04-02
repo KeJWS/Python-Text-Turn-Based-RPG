@@ -310,7 +310,7 @@ class Equipment(Item):
                 sign = ''
             statsString += f'{stat} {sign}{self.statChangeList[stat]} '
         return statsString
-    
+
     def create_item(self, amount):
         return Equipment(self.name, self.description, amount, self.individualValue, self.objectType, self.statChangeList, self.combo)
 

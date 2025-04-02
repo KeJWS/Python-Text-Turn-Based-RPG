@@ -97,7 +97,7 @@ class Battler():
             # 使用加权随机选择暴击倍率
             rate = random.choices(list(critical_rates.keys()), weights=critical_rates.values())[0]
             print(f'\033[1;33m暴击！x{rate}\033[0m')
-            return dmg * rate
+            return round(dmg * rate)
         else:
             return dmg
 
