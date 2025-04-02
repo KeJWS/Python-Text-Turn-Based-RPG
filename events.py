@@ -234,22 +234,26 @@ class InnEvent(HealingEvent):
         elif accept == 'n':
             print(self.refuse)
 
-# Quests
-# -> Caesarus
-caesarus_bandit_combat = FixedCombatEvent('Caesarus and his bandits', enemies.enemy_list_caesarus_bandit)
-quest_caesarus_bandit = quest.Quest('Caesarus and his bandits.', text.quest_caesarus_bandit_text, text.shop_quest_caesarus_bandits, 100, 100, None, caesarus_bandit_combat, 5)
+# 任务
+# -> 凯撒鲁斯
+caesarus_bandit_combat = FixedCombatEvent('凯撒鲁斯与他的强盗', enemies.enemy_list_caesarus_bandit)
+quest_caesarus_bandit = quest.Quest('凯撒鲁斯与他的强盗', text.quest_caesarus_bandit_text, text.shop_quest_caesarus_bandits, 100, 100, None, caesarus_bandit_combat, 5)
 
-# Event Instances
-random_combat = RandomCombatEvent('Random Combat')
-shop_rik_armor = ShopEvent('Rik\'s Armor Shop', False, text.rik_armor_shop_encounter, text.rik_armor_shop_enter, text.rik_armor_shop_talk, text.rik_armor_shop_exit, items.rik_armor_shop_item_set, quest_caesarus_bandit)
-shop_itz_magic = ShopEvent('Itz Magic', False, text.itz_magic_encounter, text.itz_magic_enter, text.itz_magic_talk, text.itz_magic_exit, items.itz_magic_item_set, None)
-heal_medussa_statue = HealingEvent('Medussa\'s Statue', text.medussa_statue_encounter, text.medussa_statue_success,
-                                text.medussa_statue_fail, text.medussa_statue_refuse, 70, False, 20)
-inn_event = InnEvent('Inn', text.inn_event_encounter, text.inn_event_success, text.inn_event_fail, text.inn_event_refuse, 50, 15)
-# Grouped events
+# 事件实例
+random_combat = RandomCombatEvent('随机战斗')
+shop_rik_armor = ShopEvent('里克的护甲店', False, text.rik_armor_shop_encounter, text.rik_armor_shop_enter, 
+                           text.rik_armor_shop_talk, text.rik_armor_shop_exit, items.rik_armor_shop_item_set, quest_caesarus_bandit)
+shop_itz_magic = ShopEvent('伊兹魔法店', False, text.itz_magic_encounter, text.itz_magic_enter, 
+                           text.itz_magic_talk, text.itz_magic_exit, items.itz_magic_item_set, None)
+heal_medussa_statue = HealingEvent('美杜莎雕像', text.medussa_statue_encounter, text.medussa_statue_success,
+                                   text.medussa_statue_fail, text.medussa_statue_refuse, 70, False, 20)
+inn_event = InnEvent('旅馆', text.inn_event_encounter, text.inn_event_success, text.inn_event_fail, 
+                     text.inn_event_refuse, 50, 15)
+
+# 事件分类
 combat_event_list = [random_combat]
 shop_event_list = [shop_itz_magic, shop_rik_armor]
 heal_event_list = [heal_medussa_statue, inn_event]
 
-# List of all events, divided by type
+# 按类型分类的事件列表
 event_type_list = [combat_event_list, shop_event_list, heal_event_list]

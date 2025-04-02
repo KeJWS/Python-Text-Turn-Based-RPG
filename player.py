@@ -2,6 +2,8 @@ import inventory
 import text
 import combat
 
+from test.constants import MONEY_MULTIPLIER, EXPERIENCE_RATE
+
 class Player(combat.Battler):
     '''
     玩家主类，负责处理所有与玩家属性和游戏进程相关的信息。
@@ -144,8 +146,8 @@ class Player(combat.Battler):
         exp: int
             要增加的经验值。
         '''
-        self.xp += exp
-        print(f"你获得了 \033[32m{exp}\033[0m 经验值")
+        self.xp += exp * EXPERIENCE_RATE
+        print(f"你获得了 \033[32m{exp*EXPERIENCE_RATE}\033[0m 经验值")
         # 处理升级
         while self.xp >= self.xpToNextLvl:
             self.xp -= self.xpToNextLvl
@@ -167,8 +169,8 @@ class Player(combat.Battler):
         money: int
             要增加的金币数量。
         '''
-        self.money += money
-        print(f"你获得了 \033[33m{money}\033[0m 枚金币! (💰: \033[33m{self.money}\033[0m)")
+        self.money += money * MONEY_MULTIPLIER
+        print(f"你获得了 \033[33m{money*MONEY_MULTIPLIER}\033[0m 枚金币! (💰: \033[33m{self.money}\033[0m)")
 
     def assign_aptitude_points(self):
         '''

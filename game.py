@@ -88,15 +88,36 @@ def give_initial_items(myPlayer):
         需要给予初始物品的玩家。
     '''
     print(text.initial_event_text)
-    items_map = {'1': [items.rustySword, items.noviceArmor],
-                 '2': [items.brokenDagger, items.noviceArmor],
-                 '3': [items.oldStaff, items.oldRobes, items.grimoireFireball]}
-    while (option := input("> ")) not in items_map:
-        pass
+    option = str(input("> "))
     clear_screen()
+    while option not in ['1', '2', '3', '4', '5', '6']:
+        option = str(input("> "))
+    if option == '1':
+        items.rustySword.add_to_inventory_player(myPlayer.inventory)
+        items.noviceArmor.add_to_inventory_player(myPlayer.inventory)
+        myPlayer.stats['atk'] += 5; print("选择战士: 攻击+5")
+    elif option == '2':
+        items.brokenDagger.add_to_inventory_player(myPlayer.inventory)
+        items.noviceArmor.add_to_inventory_player(myPlayer.inventory)
+        myPlayer.stats['speed'] += 5; print("选择盗贼: 速度+5")
+    elif option == '3':
+        items.oldStaff.add_to_inventory_player(myPlayer.inventory)
+        items.oldRobes.add_to_inventory_player(myPlayer.inventory)
+        items.grimoireFireball.add_to_inventory_player(myPlayer.inventory)
+        myPlayer.stats['matk'] += 5; print("选择法师: 魔攻+5")
+    elif option == '4':
+        items.woodenBow.add_to_inventory_player(myPlayer.inventory)
+        items.clothingArmor.add_to_inventory_player(myPlayer.inventory)
+        myPlayer.stats['critCh'] += 5; print("选择猎人: 暴击+5")
+    elif option == '5':
+        items.woodenSword.add_to_inventory_player(myPlayer.inventory)
+        items.bronzeArmor.add_to_inventory_player(myPlayer.inventory)
+        myPlayer.stats['def'] += 5; print("选择盾战士: 防御+5")
+    elif option == '6':
+        items.woodenStaff.add_to_inventory_player(myPlayer.inventory)
+        items.oldRobes.add_to_inventory_player(myPlayer.inventory)
+        myPlayer.stats['mdef'] += 5; print("选择僧侣: 魔防+5")
     print(f"[DEBUG] 选择了初始装备: {option}")
-    for item in items_map[option]:
-        item.add_to_inventory_player(myPlayer.inventory)
     print('[ \033[31m请记得在背包中装备这些物品\033[0m ]')
 
 def generate_event(myPlayer, combat_chance, shop_chance, heal_chance):

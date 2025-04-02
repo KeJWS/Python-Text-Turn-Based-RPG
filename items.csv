@@ -1,25 +1,36 @@
 id,name,description,amount,individual_value,objectType,combo,statChangeList
 1 ,# 初始物品,---初始武器---,1,0,,,
-2 ,🗡️ 生锈的剑,,1,6,Weapon,None,{'atk': 3}
-3 ,🔪 破损的匕首,,1,6,Weapon,None,"{'atk': 1, 'critCh': 5, 'speed': 1}"
-4 ,🏏 旧法杖,,1,6,Weapon,None,"{'matk': 1, 'maxMp': 2}"
+2 ,🗡️ 生锈的剑 Lv0,,1,6,Weapon,None,{'atk': 3}
+3 ,🔪 破损的匕首 Lv0,,1,6,Weapon,None,"{'atk': 1, 'critCh': 5, 'speed': 1}"
+4 ,🏏 旧法杖 Lv0,,1,6,Weapon,None,"{'matk': 1, 'maxMp': 2}"
 5 ,,---初始盔甲---,1,0,,,
-6 ,🛡️ 新手盔甲,,1,10,Armor,None,"{'maxHp': 1, 'def': 3, 'speed': 1}"
-7 ,🛡️ 旧长袍,,1,10,Armor,None,"{'maxHp': 1, 'def': 1, 'mdef': 2, 'maxMp': 2}"
+6 ,🛡️ 新手盔甲 Lv0,,1,10,Armor,None,"{'maxHp': 1, 'def': 3, 'speed': 1}"
+7 ,🛡️ 旧长袍 Lv0,,1,10,Armor,None,"{'maxHp': 1, 'def': 1, 'mdef': 2, 'maxMp': 2}"
 8 ,# 基础物品,---基础武器---,1,0,,,
-9 ,🗡️ 长剑,,1,19,Weapon,comboSlash1,"{'atk': 6, 'def': 2}"
-10,🔪 匕首,,1,15,Weapon,comboVampireStab1,"{'atk': 4, 'critCh': 10, 'speed': 2}"
-11,🏏 法杖,,1,18,Weapon,comboMeditation1,"{'atk': 2, 'matk': 3, 'maxMp': 4}"
-12,,---基础盔甲---,1,0,,,
-13,🛡️ 布甲,,1,18,Armor,None,"{'maxHp': 3, 'def': 3, 'speed': 2}"
-14,🛡️ 青铜盔甲,,1,25,Armor,None,"{'maxHp': 4, 'def': 5}"
-15,🛡️ 学者长袍,,1,25,Armor,None,"{'maxHp': 3, 'def': 3, 'mdef': 3, 'maxMp': 4}"
-16,🏏 战锤,,1,72,Weapon,comboArmorBreaker1,"{'atk': 12, 'speed': -2}"
-17,# 高级物品,---高级武器---,1,0,,,
-18,⚔️ 双手剑,,1,75,Weapon,comboSlash2,"{'atk': 9, 'def': 2}"
-19,🏏 智者法杖,,1,70,Weapon,comboMeditation2,"{'atk': 4, 'matk': 9, 'maxMp': 5}"
-20,🗡️ 三叉戟,,1,70,Weapon,comboVampireStab2,"{'atk': 7, 'critCh': 20, 'speed': 3}"
-21,,---高级盔甲---,1,0,,,
-22,🛡️ 铁甲,,1,85,Armor,None,"{'maxHp': 8, 'def': 10}"
-23,🛡️ 智者上衣,,1,85,Armor,None,"{'maxHp':  4, 'def':  4, 'mdef': 7, 'maxMp': 10}"
-24,🛡️ 盗贼盔甲,,1,80,Armor,None,"{'maxHp': 5, 'def': 6, 'speed': 3}"
+9 ,🗡️ 木剑 Lv1,+,1,12,Weapon,None,{'atk': 5}
+10,🔪 小刀 Lv1,+,1,10,Weapon,None,"{'atk': 3, 'critCh': 5, 'speed': 3}"
+11,🏏 木杖 Lv1,+,1,10,Weapon,None,"{'atk': 1, 'matk': 2, 'maxMp': 2}"
+12,🏹 木弓 Lv1,+,1,15,Weapon,None,"{'atk': 4, 'critCh': 15}"
+13,🗡️ 长剑 Lv2,,1,19,Weapon,comboSlash1,"{'atk': 6, 'def': 2}"
+14,🔪 匕首 Lv2,,1,15,Weapon,comboVampireStab1,"{'atk': 4, 'critCh': 10, 'speed': 2}"
+15,🏏 法杖 Lv2,,1,18,Weapon,comboMeditation1,"{'atk': 2, 'matk': 3, 'maxMp': 4}"
+16,🏹 长弓 Lv2,+,1,45,Weapon,None,"{'atk': 6, 'critCh': 25}"
+17,🏏 大锤 Lv2,+,1,40,Weapon,None,"{'atk': 10, 'speed': -3}"
+18,🗡️ 钢剑 Lv2,+,1,60,Weapon,None,{'atk': 8}
+19,,---基础盔甲---,1,0,,,
+20,🛡️ 布衣 Lv1,+,1,12,Armor,None,"{'maxHp': 2, 'def': 2, 'speed': 1}"
+21,🛡️ 布甲 Lv2,,1,18,Armor,None,"{'maxHp': 3, 'def': 3, 'speed': 2}"
+22,🛡️ 青铜盔甲 Lv2,,1,25,Armor,None,"{'maxHp': 4, 'def': 5}"
+23,🛡️ 学者长袍 Lv2,,1,25,Armor,None,"{'maxHp': 3, 'def': 3, 'mdef': 3, 'maxMp': 4}"
+24,🛡️ 皮甲 Lv2,+,1,30,Armor,None,"{'maxHp': 4, 'def': 5, 'speed': 2}"
+25,# 高级物品,---高级武器---,1,0,,,
+26,🏏 战锤 Lv3,,1,72,Weapon,comboArmorBreaker1,"{'atk': 12, 'speed': -2}"
+27,⚔️ 双手剑 Lv3,,1,75,Weapon,comboSlash2,"{'atk': 9, 'def': 2}"
+28,🏏 智者法杖 Lv3,,1,70,Weapon,comboMeditation2,"{'atk': 4, 'matk': 9, 'maxMp': 5}"
+29,🗡️ 三叉戟 Lv3,,1,70,Weapon,comboVampireStab2,"{'atk': 7, 'critCh': 20, 'speed': 3}"
+30,🗡️ 勇者剑 Lv4,+,1,120,Weapon,None,{'atk': 15}
+31,,---高级盔甲---,1,0,,,
+32,🛡️ 铁甲 Lv3,,1,85,Armor,None,"{'maxHp': 8, 'def': 10}"
+33,🛡️ 智者上衣 Lv3,,1,85,Armor,None,"{'maxHp':  4, 'def':  4, 'mdef': 7, 'maxMp': 10}"
+34,🛡️ 盗贼盔甲 Lv3,,1,80,Armor,None,"{'maxHp': 5, 'def': 6, 'speed': 3}"
+35,🛡️ 重甲 Lv4,+,1,150,Armor,None,"{'def': 15, 'speed': -3}"
