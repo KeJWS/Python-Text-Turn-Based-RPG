@@ -6,9 +6,9 @@ class Shop():
     处理商店管理。
 
     Attributes:
-    itemSet : List
+    itemSet: List
         商店可以拥有的物品池。
-    inventory : Inventory
+    inventory: Inventory
         商店的库存
     '''
     def __init__(self, itemSet) -> None:

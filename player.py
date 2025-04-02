@@ -4,81 +4,81 @@ import combat
 
 class Player(combat.Battler):
     '''
-    Main class for player handling. Includes all information about stats
-    and progression made throughout the game.
+    玩家主类，负责处理所有与玩家属性和游戏进程相关的信息。
 
     Attributes:
-    lvl : int
-        Player's current level. Starts in 1 by default.
-    xp : int
-        Player's current xp (Experience Points).
-    xpToNextLvl : int
-        Necessary amount of xp to reach next level.
-    comboPoints : int
-        Amount of current Combo Points (CP).
-    aptitudes : Dictionary
-        Dictionary for handling the aptitude system. Each aptitude grants
-        stat bonuses:
-            STR -> ATK + 1
-            DEX -> SPD + 1, CRIT + 1
-            INT -> MATK + 1
-            WIS -> MP + 5
-            CONST -> MAXHP + 5
-    aptitudePoints : int
-        Amount of points for upgrading aptitudes.
-    inventory : Inventory
-        Player's inventory.
-    equipment : Dictionary
-        Dictionary that defines current player's equipment.
-    money : int
-        Current amount of money (gold/coins).
-    combos : List
-        List of combos the user is capable to use.
-    spells : List
-        List of spells the user is capable to use.
-    activeQuests : List
-        List of active Quests.
-    completedQuests : List
-        List of completed Quests
+    lvl: int
+        玩家当前等级，默认为 1。
+    xp: int
+        玩家当前经验值 (XP)。
+    xpToNextLvl: int
+        升级所需的经验值。
+    comboPoints: int
+        当前连击点数 (CP)。
+    aptitudes: Dictionary
+        负责管理能力系统的字典。每种能力可提供以下属性加成：
+            STR -> ATK + 1 （力量影响攻击）
+            DEX -> SPD + 1, CRIT + 1 （敏捷影响速度和暴击率）
+            INT -> MATK + 1 （智力影响魔法攻击）
+            WIS -> MP + 5 （智慧影响魔法值）
+            CONST -> MAXHP + 5 （体质影响最大生命值）
+    aptitudePoints: int
+        可用于提升能力的点数。
+    inventory: Inventory
+        玩家物品栏。
+    equipment: Dictionary
+        存储当前玩家装备的字典。
+    money: int
+        当前金钱（金币）。
+    combos: List
+        玩家可使用的连击列表。
+    spells: List
+        玩家可使用的法术列表。
+    activeQuests: List
+        当前进行中的任务列表。
+    completedQuests: List
+        已完成的任务列表。
     '''
     def __init__(self, name) -> None:
-        stats = {'maxHp' : 25,
-                    'hp' : 25,
-                    'maxMp' : 10,
-                    'mp' : 10,
-                    'atk' : 10,
-                    'def' : 10,
-                    'matk' : 10,
-                    'mdef' : 10,
-                    'speed' : 10,
-                    'critCh' : 10
+        stats = {'maxHp': 25,
+                    'hp': 25,
+                    'maxMp': 10,
+                    'mp': 10,
+                    'atk': 10,
+                    'def': 10,
+                    'matk': 10,
+                    'mdef': 10,
+                    'speed': 10,
+                    'critCh': 10
         }
 
         super().__init__(name, stats)
 
-        self.lvl = 1 # Player Lvl
-        self.xp = 0 # Current xp
-        self.xpToNextLvl = 35 # Amount of xp to reach next lvl is multiplied by 1.5 per level
+        self.lvl = 1 # 玩家等级
+        self.xp = 0 # 当前经验值
+
+        # TODO: 需要更好的经验曲线
+        self.xpToNextLvl = 35 # 升级所需经验值，每级乘以 1.5
         self.comboPoints = 0
-        self.aptitudes = {'str' : 5,
-                    'dex' : 5,
-                    'int' : 5,
-                    'wis' : 5,
-                    'const' : 5
+        self.aptitudes = {'str': 5,
+                    'dex': 5,
+                    'int': 5,
+                    'wis': 5,
+                    'const': 5
         }
 
-        self.aptitudePoints = 0 # Points for upgrading aptitudes
-        self.inventory = inventory.Inventory() # Player's inventory
-        self.equipment = {'Weapon' : None,
-                            'Armor' : None} # Player's equipment, can be further expanded
-        self.money = 20 # Current money
-        self.combos = [] # Player's selection of combos (atk, cp)
-        self.spells = [] # Player's selection of spells (matk, mp)
+        self.aptitudePoints = 0 # 可分配的能力点
+        self.inventory = inventory.Inventory() # 玩家物品栏
+        self.equipment = {'Weapon': None,
+                            'Armor': None} # 玩家装备，可扩展
+        self.money = 20 # 当前金钱
+        self.combos = [] # 玩家可用连击（攻击 + CP）
+        self.spells = [] # 玩家可用法术（魔攻 + MP）
 
         self.activeQuests = []
         self.completedQuests = []
         
-        self.isAlly = True # Check if battler is an ally or not
+        self.isAlly = True # 判断是否为友军
     
     def normal_attack(self, defender):
         self.addComboPoints(1)
@@ -86,49 +86,48 @@ class Player(combat.Battler):
 
     def equip_item(self, equipment):
         '''
-        Player equips certain item. Must be of type 'Equipment'.
+        玩家装备指定物品，物品必须是“装备”类型。
 
         Parameters:
-        equipment : Equipment
-            Item to equip.
+        equipment: Equipment
+            需要装备的物品。
         '''
         if type(equipment) == inventory.Equipment:
             actualEquipment = self.equipment[equipment.objectType]
             if actualEquipment != None:
-                print(f'{actualEquipment.name} has been unequiped.')
+                print(f'{actualEquipment.name} 已卸下。')
                 actualEquipment.add_to_inventory(self.inventory, 1)
-                # Remove the combo from previous combo
+                # 移除之前装备提供的连击
                 if actualEquipment.combo != None:
                     self.combos.remove(actualEquipment.combo)
-                    print(f'You can no longer use the combo: {actualEquipment.combo.name}')
-                # Remove stats from previous equipment
+                    print(f'你无法再使用连击：{actualEquipment.combo.name}')
+                # 移除旧装备提供的属性加成
                 for stat in actualEquipment.statChangeList:
                     self.stats[stat] -= actualEquipment.statChangeList[stat]
-            # Adds stats to player
+            # 增加新装备提供的属性加成
             for stat in equipment.statChangeList:
                 self.stats[stat] += equipment.statChangeList[stat]
             self.equipment[equipment.objectType] = equipment.create_item(1)
-            # Adds equipment's combo
+            # 添加新装备的连击
             if equipment.combo != None and equipment.combo not in self.combos:
                 self.combos.append(equipment.combo)
-                print(f'You can now use the combo: {equipment.combo.name}')
+                print(f'你现在可以使用连击：{equipment.combo.name}')
             self.inventory.decrease_item_amount(equipment, 1)
-            print(f'{equipment.name} has been equipped.')
+            print(f'{equipment.name} 已装备。')
             print(equipment.show_stats())
         else:
             if equipment != None:
-                print('{} is not equipable.'.format(equipment.name))
+                print('{} 无法装备。'.format(equipment.name))
         text.inventory_menu()
         self.inventory.show_inventory()
 
     def use_item(self, item):
         '''
-        Uses a certain item. Item must be in the "usable_items" list
-        to be used.
+        使用指定的物品。物品必须属于 "usable_items" 列表中的类型才能被使用。
 
         Parameters:
-        item : Item
-            Item to be used.
+        item: Item
+            要使用的物品。
         '''
         usable_items = [inventory.Potion, inventory.Grimoire]
         if type(item) in usable_items:
@@ -138,48 +137,48 @@ class Player(combat.Battler):
 
     def add_exp(self, exp):
         '''
-        Adds a certain amount of exp to the player and also handles leveling up.
-        When leveling up, player also recovers hp/mp fully and has a +1 to all stats.
+        增加玩家的经验值，并处理升级逻辑。
+        升级时，玩家的生命值和魔法值将完全恢复，并且所有属性 +1。
 
         Parameters:
-        exp : int
-            Amount of exp points to add.
+        exp: int
+            要增加的经验值。
         '''
         self.xp += exp
-        print(f"You earn {exp}xp")
-        # Level up:
-        while(self.xp >= self.xpToNextLvl):
+        print(f"你获得了 \033[32m{exp}\033[0m 经验值")
+        # 处理升级
+        while self.xp >= self.xpToNextLvl:
             self.xp -= self.xpToNextLvl
             self.lvl += 1
-            # You can change this formula for different exp progression
+            # 经验需求计算公式，可调整
             self.xpToNextLvl = round(self.xpToNextLvl * 1.5 + 10 * self.lvl * self.lvl)
             for stat in self.stats:
                 self.stats[stat] += 1
             self.aptitudePoints += 1
             combat.fully_heal(self)
             combat.fully_recover_mp(self)
-            print(f"Level up! You are now level {self.lvl}. You have {self.aptitudePoints} aptitude points")
+            print(f"升级了！你现在是 {self.lvl} 级，剩余 {self.aptitudePoints} 个能力点。")
 
     def add_money(self, money):
         '''
-        Adds a certain amount of money to the player.
+        增加玩家的金钱。
 
         Parameters:
-        money : int
-            Amount of money to be added.
+        money: int
+            要增加的金币数量。
         '''
         self.money += money
-        print(f"You earn {money} coins")
+        print(f"你获得了 \033[33m{money}\033[0m 枚金币")
 
     def assign_aptitude_points(self):
         '''
-        Menu for upgrading aptitudes.
+        能力点分配菜单。
         '''
-        optionsDictionary = {'1' : 'str',
-                            '2' : 'dex',
-                            '3' : 'int',
-                            '4' : 'wis',
-                            '5' : 'const'}
+        optionsDictionary = {'1': 'str',
+                            '2': 'dex',
+                            '3': 'int',
+                            '4': 'wis',
+                            '5': 'const'}
         text.showAptitudes(self)
         option = input("> ")
         while option.lower() != 'q':
@@ -187,22 +186,22 @@ class Player(combat.Battler):
                 if self.aptitudePoints >= 1:
                     aptitudeToAssign = optionsDictionary[option]
                     self.aptitudes[aptitudeToAssign] += 1
-                    print(f'{aptitudeToAssign} is now {self.aptitudes[aptitudeToAssign]}!')
+                    print(f'{aptitudeToAssign} 现在是 {self.aptitudes[aptitudeToAssign]}!')
                     self.update_stats_to_aptitudes(aptitudeToAssign)
                     self.aptitudePoints -= 1
                 else:
-                    print('Not enough points!')
+                    print('能力点不足！')
             except:
-                print('Please enter a valid number')
+                print('请输入有效的编号')
             option = input("> ")
 
     def update_stats_to_aptitudes(self, aptitude):
         '''
-        Assigns the corresponding stat points when upgrading aptitudes.
+        根据所提升的能力点分配对应的属性加成。
 
         Parameters:
-        aptitude : str
-            Aptitude to be upgraded.
+        aptitude: str
+            要升级的能力。
         '''
         if aptitude == 'str':
             self.stats['atk'] += 1
@@ -218,11 +217,11 @@ class Player(combat.Battler):
 
     def buy_from_vendor(self, vendor):
         '''
-        Buys an item from a vendor.
+        从商店购买物品。
 
         Parameters:
-        vendor : Shop
-            Shop where the player is going to buy.
+        vendor: Shop
+            玩家要购买物品的商店。
         '''
         text.shop_buy(self)
         vendor.inventory.show_inventory()
@@ -237,21 +236,21 @@ class Player(combat.Battler):
         
     def show_quests(self):
         '''
-        Shows current quests, active and completed.
+        显示当前任务，包括进行中的任务和已完成的任务。
         '''
-        print('/// ACTIVE ///')
+        print('/// 进行中 ///')
         for actq in self.activeQuests:
             actq.show_info()
-        print('/// COMPLETED ///')
+        print('/// 已完成 ///')
         for cmpq in self.completedQuests:
             cmpq.show_info()
 
     def addComboPoints(self, points):
         '''
-        Adds a certain amount of combo points.
+        增加一定数量的连击点数 (CP)。
 
         Parameters:
-        points : int
-            Amount of points to be added.
+        points: int
+            要增加的连击点数。
         '''
         self.comboPoints += points

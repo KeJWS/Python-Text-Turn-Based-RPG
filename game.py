@@ -31,7 +31,7 @@ def inventory_selections(player):
     背包菜单，用于使用、丢弃或装备物品。
 
     Parameters:
-    player : Player
+    player: Player
         需要访问其背包的玩家。
     '''
     actions = {'u': lambda: player.use_item(player.inventory.use_item()),
@@ -49,7 +49,7 @@ def play():
     主函数，用于进行游戏。
 
     Returns:
-    alive : bool
+    alive: bool
         当游戏结束（玩家死亡）时返回False。
     '''
     print("[DEBUG] 游戏开始")
@@ -86,7 +86,7 @@ def give_initial_items(myPlayer):
     根据选择给予玩家初始物品。
 
     Parameters:
-    myPlayer : Player
+    myPlayer: Player
         需要给予初始物品的玩家。
     '''
     print(text.initial_event_text)
@@ -107,13 +107,13 @@ def generate_event(myPlayer, combat_chance, shop_chance, heal_chance):
     还处理任务完成。
 
     Parameters:
-    myPlayer : Player
+    myPlayer: Player
         受事件影响的玩家
-    combat_chance : int
+    combat_chance: int
         生成战斗事件的几率（%）
-    shop_chance : int
+    shop_chance: int
         生成商店事件的几率（%）
-    heal_chance : int
+    heal_chance: int
         生成治疗事件的几率（%）
     '''
     event = random.choice(random.choices(events.event_type_list, weights=(combat_chance, shop_chance, heal_chance), k=1)[0])

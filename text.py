@@ -1,4 +1,8 @@
 from constants import VERSION
+import os
+
+def clear_screen():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 def title_screen():
     print('############################')
@@ -32,6 +36,7 @@ def showStats(player):
         f"############################\n"
         "#          STATS           #\n"
         f"############################\n"
+        f"LV: {player.lvl}      EXP: {player.xp}/{player.xpToNextLvl}\n"
         f"\033[31mHP: {player.stats['hp']}/{player.stats['maxHp']}\033[0m  \033[34mMP: {player.stats['mp']}/{player.stats['maxMp']}\033[0m\n"
         f"ATK: {player.stats['atk']}    DEF: {player.stats['def']}\n"
         f"MAT: {player.stats['matk']}    MDF: {player.stats['mdef']}\n"
@@ -52,6 +57,9 @@ def showStats(player):
 
     for slot, item in player.equipment.items():
         print(f"{slot}: {item.name if item else ''}")
+
+    input("\n按 Enter 继续...")
+    clear_screen()
 
 def showAptitudes(player):
     print('############################')
@@ -76,14 +84,13 @@ def inventory_menu():
 
 def combat_menu(player, allies, enemies):
     print('############################')
-    print('{} - HP: {}/{} - MP: {}/{} - CP: {}'.format(player.name, player.stats['hp'], player.stats['maxHp'],
-                                                player.stats['mp'], player.stats['maxMp'], player.comboPoints))
+    print(f'{player.name} - \033[31mHP: {player.stats['hp']}/{player.stats['maxHp']}\033[0m - \033[34mMP: {player.stats['mp']}/{player.stats['maxMp']}\033[0m - \033[33mCP: {player.comboPoints}\033[0m')
     for ally in allies:
         if ally != player:
-            print('{} - HP: {}/{}'.format(ally.name, ally.stats['hp'], ally.stats['maxHp']))
+            print(f'{ally.name} - \033[31mHP: {ally.stats['hp']}/{ally.stats['maxHp']}\033[0m')
     print('-----------------------------')
     for enemy in enemies:
-        print('{} - HP: {}/{}'.format(enemy.name, enemy.stats['hp'], enemy.stats['maxHp']))
+        print(f'{enemy.name} - \033[32mHP: {enemy.stats['hp']}/{enemy.stats['maxHp']}\033[0m')
     print('############################')
     print('#       A - Attack         #')
     print('#       C - Combos         #')
@@ -114,7 +121,7 @@ def select_objective(targets):
     print('############################')
     index = 1
     for t in targets:
-        print('{} - {} - HP: {}/{}'.format(index, t.name, t.stats['hp'], t.stats['maxHp']))
+        print(f'{index} - {t.name} - \033[32mHP: {t.stats['hp']}/{t.stats['maxHp']}\033[0m')
         index += 1
     print('############################')
 

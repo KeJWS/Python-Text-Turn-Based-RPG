@@ -39,7 +39,7 @@ oldRobes = equipment_objects["🛡️ 旧长袍"]
 
 # 基础物品
 # -> 基础武器
-# longsword = inventory.Equipment('长剑', '', 1, 19, 'Weapon', {'atk' : 6, 'def' : 2}, skills.comboSlash1)
+# longsword = inventory.Equipment('长剑', '', 1, 19, 'Weapon', {'atk': 6, 'def': 2}, skills.comboSlash1)
 longsword = equipment_objects["🗡️ 长剑"]
 dagger = equipment_objects["🔪 匕首"]
 staff = equipment_objects["🏏 法杖"]

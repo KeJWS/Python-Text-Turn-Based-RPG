@@ -60,6 +60,8 @@ class Battler():
             对防御者造成的伤害
         '''
         print(f'{self.name} 发动攻击！')
+
+        # TODO: 需要更好的伤害计算公式
         dmg = round(self.stats['atk'] * (100 / (100 + defender.stats['def'] * 1.5)))
         # 检查是否为暴击
         dmg = self.check_critical(dmg)
