@@ -3,26 +3,22 @@ import random
 import player
 import text
 
-'''
-Parent class for all instances that can enter in combat.
-A Battler will always be either an Enemy, a Player's ally or the Player himself
-'''
 class Battler():
     '''
-    Parent class for all instances that can enter in combat.
-    A Battler will always be either an Enemy, a Player's ally or the Player himself
+    所有可以参与战斗的实例的父类。
+    Battler 将始终是敌人、玩家的盟友或玩家本人。
 
     Attributes:
     name : str
-        Name of the battler.
+        战斗者的名称。
     stats : dict
-        Stats of the battler, dictionary ex: {'atk' : 3}.
+        战斗者的属性，字典格式，例如：{'atk' : 3}。
     alive : bool              
-        Bool for battler being alive or dead.
+        表示战斗者是否存活的布尔值。
     buffsAndDebuffs : list     
-        List of buffs and debuffs battler currently has.
+        战斗者当前拥有的增益和减益列表。
     isAlly : bool             
-        Bool for battler being a Player's ally or not.
+        表示战斗者是否为玩家的盟友的布尔值。
     '''
     def __init__(self, name, stats) -> None:
         self.name = name
@@ -33,41 +29,41 @@ class Battler():
 
     def take_dmg(self, dmg):
         '''
-        Function for battlers taking damage from any source.
-        Subtracts the damage quantity from its health. Also checks if it dies.
+        战斗者受到来自任何来源的伤害的函数。
+        从其生命值中减去伤害量，同时检查是否死亡。
 
         Parameters:
         dmg : int     
-            Quantity of damage dealt
+            造成的伤害数量
         '''
         if dmg < 0: dmg = 0
         self.stats['hp'] -= dmg
-        print(f'{self.name} takes {dmg} damage!')
-        # Defender dies
+        print(f'{self.name} 受到 \033[33m{dmg}\033[0m 点伤害！')
+        # 防御者死亡
         if self.stats['hp'] <= 0:
-            print(f'{self.name} has been slain.')
+            print(f'\033[31m{self.name} 被击杀了。\033[0m')
             self.alive = False
 
     def normal_attack(self, defender):
         '''
-        Normal attack all battlers have.
+        所有战斗者都有的普通攻击。
 
-        Damage is calculated as follows:
-        attacker_atk * (100/(100 + defender_def * 1.5))
+        伤害计算如下：
+        attacker_atk * (100 / (100 + defender_def * 1.5))
 
         Parameters:
         defender : Battler
-            Defending battler
+            防御的战斗者
 
         Returns:
         dmg : int        
-            Damage dealt to defender
+            对防御者造成的伤害
         '''
-        print(f'{self.name} attacks!')
-        dmg = round(self.stats['atk'] * (100/(100 + defender.stats['def']*1.5)))
-        # Check for critical attack
+        print(f'{self.name} 发动攻击！')
+        dmg = round(self.stats['atk'] * (100 / (100 + defender.stats['def'] * 1.5)))
+        # 检查是否为暴击
         dmg = self.check_critical(dmg)
-        # Check for missed attack
+        # 检查是否攻击未命中
         if not check_miss(self, defender):
             defender.take_dmg(dmg)
         else:
@@ -76,61 +72,70 @@ class Battler():
 
     def check_critical(self, dmg):
         '''
-        Checks if an attack is critical. If it is, doubles its damage.
+        检查攻击是否为暴击。如果是，则伤害翻倍。
 
-        Critical chance comes by the battler's stat: 'critCh'
+        暴击几率来源于战斗者的属性：'critCh'
 
         Parameters:
         dmg : int     
-            Base damage dealt
+            基础伤害
 
         Returns:
         dmg : int 
-            Damage dealt (after checking and operating if critical)
+            经过检查和处理后的伤害
         '''
-        if self.stats['critCh'] > random.randint(0, 100):
-            print('Critical blow!')
-            return dmg * 2
+        if self.stats['critCh'] >= 100 or self.stats['critCh'] > random.randint(1, 100):
+            # 暴击倍率 : 概率
+            critical_rates = {
+            1.5: 50,
+            2.0: 30,
+            2.5: 15,
+            3.0: 5
+            }
+            # 使用加权随机选择暴击倍率
+            rate = random.choices(list(critical_rates.keys()), weights=critical_rates.values())[0]
+            print(f'\033[1;33m暴击！x{rate}\033[0m')
+            return dmg * rate
         else:
             return dmg
 
     def recover_mp(self, amount):
         '''
-        Battler recovers certain amount of 'mp' (Mana Points).
+        战斗者恢复一定量的 'mp'（法力值）。
 
         Parameters:
         amount : int      
-            Amount of mp recovered
+            恢复的法力值
         '''
         if self.stats['mp'] + amount > self.stats['maxMp']:
             fully_recover_mp(self)
         else:
             self.stats['mp'] += amount
-        print(f'{self.name} recovers {amount} mp!')
+        print(f'{self.name} 恢复了 \033[34m{amount}\033[0m 点法力值！')
 
     def heal(self, amount):
         '''
-        Battler recovers certain amount of 'hp' (Health Points).
+        战斗者恢复一定量的 'hp'（生命值）。
 
         Parameters:
         amount : int     
-            Amount of hp recovered
+            恢复的生命值
         '''
         if self.stats['hp'] + amount > self.stats['maxHp']:
             fully_heal(self)
         else:
             self.stats['hp'] += amount
-        print(f'{self.name} heals {amount} hp!')
+        print(f'{self.name} 恢复了 \033[31m{amount}\033[0m 点生命值！')
 
 class Enemy(Battler):
     '''
-    Base class for all enemies. Inherits class 'Battler'.
+    所有敌人的基类。继承自 'Battler' 类。
 
     Attributes:
     xpReward : int    
-        Amount of xp (Experience Points) given when slain
+        被击杀时给予的经验值（XP）数量
     goldReward : int 
-        Amount of gold (coins/money) given when slain
+        被击杀时给予的金币数量
     '''
     def __init__(self, name, stats, xpReward, goldReward) -> None:
         super().__init__(name, stats)
