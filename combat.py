@@ -146,101 +146,100 @@ class Enemy(Battler):
 
 
 '''
-Main combat loop
+主战斗循环
 '''
 
 def combat(myPlayer, enemies):
     '''
-    Handles the main combat loop between allies and enemies.
+    处理玩家与敌人之间的主要战斗循环。
 
     Parameters:
     myPlayer : Player
-        Actual player
+        当前玩家对象
     enemies : list     
-        List of enemies to combat
+        需要战斗的敌人列表
 
-    Note:
-    myPlayer should be changed to be a list named 'allies' if you can begin
-    the combat with multiple allies. Currently, you can only get allies
-    via summoning spells so this was not necessary.
+    备注:
+    如果战斗支持多个盟友，应将 myPlayer 替换为名为 'allies' 的列表。
+    目前，只有通过召唤技能才能获得盟友，因此暂未做此修改。
     '''
-    # All battlers are inserted into the Battlers list and ordered by speed (turn order)
-    allies = [myPlayer] # List of current allies
-    battlers = define_battlers(allies, enemies) # List of current Battlers (Allies + Enemies)
+    # 所有战斗单位（包括玩家和敌人）按速度排序，决定回合顺序
+    allies = [myPlayer] # 当前盟友列表
+    battlers = define_battlers(allies, enemies) # 参与战斗的单位（盟友 + 敌人）
 
-    # Sum of all exp and money the enemies drop when defeated
+    # 统计敌人掉落的经验值和金钱
     enemy_exp = 0 
     enemy_money = 0
 
     print('############################')
     for enemy in enemies:
-        print(f'A wild {enemy.name} has appeared!')
+        print(f'野生的 {enemy.name} 出现了！')
         enemy_exp += enemy.xpReward
         enemy_money += enemy.goldReward
-    # The battle will go on while the player is still alive and there are still enemies to defeat
+
+    # 只要玩家存活且仍有敌人，战斗就会持续
     while myPlayer.alive and len(enemies) > 0:
-        # Battlers should be updated for speed changes (buffs/debuffs)
+        # 由于速度可能因增益/减益效果改变，需要更新战斗顺序
         battlers = define_battlers(allies, enemies)
-        # Each battler has its turn
+
+        # 每个战斗单位轮流行动
         for battler in battlers:
-            # Player can choose its actions
+            # 玩家回合：选择行动
             if type(battler) == player.Player:
                 text.combat_menu(myPlayer, allies, enemies)
                 cmd = input('> ').lower()
                 while cmd not in ['a', 'c', 's']:
-                    print('Please enter a valid command')
+                    print('请输入有效指令')
                     cmd = input('> ').lower()
-                # Perform a normal attack
+                # 普通攻击
                 if 'a' in cmd:
                     targeted_enemy = select_target(enemies)
                     battler.normal_attack(targeted_enemy)
                     check_if_dead(allies, enemies, battlers)
-                # Cast a spell
+                # 施放技能
                 elif 's' in cmd:
                     spell_menu(myPlayer, battlers, allies, enemies)
-                # Use a combo
+                # 使用连招
                 elif 'c' in cmd:
                     combo_menu(myPlayer, battlers, allies, enemies)
             else:
-                # Allies attack a random enemy
+                # 盟友自动攻击随机敌人
                 if battler.isAlly:
                     if len(enemies) > 0:
                         randomEnemy = random.choice(enemies)
                         battler.normal_attack(randomEnemy)
                         check_if_dead(allies, enemies, battlers)
                 else:
-                    # For now, enemies will just perform a normal attack against the player.
-                    # This can be expanded to work as a functional AI
+                    # 目前敌人只会进行普通攻击，未来可扩展为完整的AI逻辑
                     randomAlly = random.choice(allies)
                     battler.normal_attack(randomAlly)
                     check_if_dead(allies, enemies, battlers)
-
-        # A turn has passed
-        # Check turns for buffs and debuffs
+        # 回合结束，检查增益和减益的持续时间
         for battler in battlers:
             check_turns_buffs_and_debuffs(battler, False)
+
     if myPlayer.alive:
-        # Deactivate all existent buffs and debuffs
+        # 移除所有增益和减益效果
         check_turns_buffs_and_debuffs(myPlayer, True)
-        # Add experience to players
+        # 给予玩家经验值和金钱奖励
         myPlayer.add_exp(enemy_exp)
         myPlayer.add_money(enemy_money)
-        # Restart Combo Points
+        # 重置连招点数
         myPlayer.comboPoints = 0
 
 def define_battlers(allies, enemies):
     '''
-    Returns the battlers list, ordered by speed (turn order).
+    返回战斗单位列表，并按速度排序（决定回合顺序）。
 
     Parameters:
     allies : List
-        List of ally Battlers
+        盟友单位列表
     enemies : List
-        List of enemy Battlers
+        敌方单位列表
 
     Returns:
     battlers : List
-        List of enemies + allies, ordered by speed
+        包含敌人和盟友的战斗单位列表，按速度排序
     '''
     battlers = enemies.copy()
     for ally in allies:
@@ -248,21 +247,21 @@ def define_battlers(allies, enemies):
     battlers.sort(key=lambda b: b.stats['speed'], reverse=True)
     return battlers
 
-# Select a certain target from the battlefield
+# 选择战斗目标
 def select_target(targets):
     '''
-    Selects a certain target from the battlefield.
+    从战场中选择一个目标。
 
     Parameters:
     targets : list
-        List of all possible target Battlers
+        可选目标单位列表
 
     Return:
     target : Battler
-        Selected target
+        选中的目标
     '''
     text.select_objective(targets)
-    # TODO: There must be an easier way to do this
+    # TODO：必须有一种更简单的方法来做到这一点
     valid_target = False
     while not valid_target:
         valid_int = False
@@ -272,9 +271,9 @@ def select_target(targets):
                 i = int(i)
                 valid_int = True
             except:
-                print('Please enter a number')
+                print('请输入数字')
         if i not in range(len(targets)+1):
-            print('Select a valid target')
+            print('请选择一个有效目标')
             valid_target = False
         else:
             valid_target = True
@@ -283,22 +282,22 @@ def select_target(targets):
 
 def spell_menu(myPlayer, battlers, allies, enemies):
     '''
-    Player selects a target spell to cast.
+    让玩家选择一个目标施放法术。
 
     Parameters:
     myPlayer : Player
-        Player caster of the spell.
+        施放法术的玩家。
     battlers : List
-        List of Battlers in the combat.
+        战斗中的所有参战者列表。
     allies : List
-        List of allies in the combat.
+        友方单位列表。
     enemies : List
-        List of enemies in the combat.
+        敌方单位列表。
     '''
     text.spell_menu(myPlayer)
     option = int(input("> "))
     while option not in range(len(myPlayer.spells)+1):
-        print('Please enter a valid number')
+        print('请输入有效的数字')
         option = int(input("> "))
     if option != 0:
         spellChosen = myPlayer.spells[option - 1]
@@ -317,22 +316,22 @@ def spell_menu(myPlayer, battlers, allies, enemies):
 
 def combo_menu(myPlayer, battlers, allies, enemies):
     '''
-    Player selects a target combo to perform.
+    让玩家选择一个目标执行连招。
 
     Parameters:
     myPlayer : Player
-        Player that performs the combo.
+        进行连招的玩家。
     battlers : List
-        List of Battlers in the combat.
+        战斗中的所有参战者列表。
     allies : List
-        List of allies in the combat.
+        友方单位列表。
     enemies : List
-        List of enemies in the combat.
+        敌方单位列表。
     '''
     text.combo_menu(myPlayer)
     option = int(input("> "))
     while option not in range(len(myPlayer.combos)+1):
-        print('Please enter a valid number')
+        print('请输入有效的数字')
         option = int(input("> "))
     if option != 0:
         comboChosen = myPlayer.combos[option - 1]
@@ -347,43 +346,41 @@ def combo_menu(myPlayer, battlers, allies, enemies):
                 comboChosen.effect(myPlayer, enemies)
                 check_if_dead(allies, enemies, battlers)
 
-# Returns True if attack misses, False if it doesn't
+# 返回 True 代表攻击未命中，返回 False 代表攻击命中
 def check_miss(attacker, defender):
     '''
-    Checks if an attack misses or not. Miss chance is determined by the following formula:
+    检查攻击是否命中，命中率由以下公式决定：
 
     chance = math.floor(math.sqrt(max(0, (5 * defender.stats['speed'] - attacker.stats['speed'] * 2))))
 
-    I tried different formulas and this one ended up being pretty competent. Check if
-    it fits you anyway.
+    经过多次尝试，这个公式表现得相对合理。当然，你可以根据需要进行调整。
 
     Parameters:
     attacker : Battler
-        Battler that performs the attack
+        发起攻击的单位。
     defender : Battler
-        Defending battler
+        受到攻击的单位。
 
     Returns:
     True/False : Bool
-        True if the attack missed. False if it doesn't.
+        True 代表攻击未命中，False 代表攻击命中。
     '''
     chance = math.floor(math.sqrt(max(0, (5 * defender.stats['speed'] - attacker.stats['speed'] * 2))))
     if chance > random.randint(0, 100):
-        print(f'{attacker.name}\'s attack missed!')
+        print(f'{attacker.name}的攻击未命中！')
         return True
     return False
 
 def check_turns_buffs_and_debuffs(target, deactivate):
     '''
-    Checks if buffs and debuffs should still be active (checks its turn count).
+    检查目标的增益和减益状态是否仍然有效（基于回合数判断）。
 
     Parameters:
     target : Battler
-        Battler whose buffs and debuffs should be checked
+        需要检查状态的单位。
     deactivate : bool
-        If true, buffs and debuffs deactivate instantly regardless of turn count
-        (useful when ending a combat or any similar situation). If false, acts
-        normally.
+        若为 True，则立即清除所有增益和减益状态（适用于战斗结束等情况）。
+        若为 False，则正常检测状态回合数。
     '''
     if deactivate:
         for bd in target.buffsAndDebuffs:
@@ -392,22 +389,21 @@ def check_turns_buffs_and_debuffs(target, deactivate):
         for bd in target.buffsAndDebuffs:
             bd.check_turns()
 
-# Checks if a battler is dead and removes it from the appropiate lists
+# 检查参战者是否阵亡，并从相应列表中移除
 def check_if_dead(allies, enemies, battlers):
     '''
-    Checks if current battlers are dead and if they are, removes them from
-    the corresponding lists.
+    检查战斗单位是否阵亡，如果阵亡，则从相应列表中移除。
 
     Parameters:
     allies : List
-        List of ally Battlers
+        友方单位列表。
     enemies : List
-        List of enemy Battlers
+        敌方单位列表。
     battlers : List
-        List of all battlers
+        参战单位总列表。
     '''
-    # TODO: This can probably be done in an easier way, but iterating
-    # while deleting objects leads to weird stuff happening.
+    # TODO：这可能以更简单的方式完成，但要迭代
+    # 删除对象会导致发生奇怪的事情。
     dead_bodies = []
     for ally in allies:
         if ally.alive == False:
@@ -425,42 +421,42 @@ def check_if_dead(allies, enemies, battlers):
 
 def fully_heal(target):
     '''
-    Fully heals a target.
+    完全恢复目标的生命值。
 
     Parameters:
     target : Battler
-        Battler to fully heal
+        需要恢复的单位。
     '''
     target.stats['hp'] = target.stats['maxHp']
 
 def fully_recover_mp(target):
     '''
-    Fully recovers target's mp.
+    完全恢复目标的魔法值。
 
     Parameters:
     target : Battler
-        Battler to fully recover
+        需要恢复的单位。
     '''
     target.stats['mp'] = target.stats['maxMp']
 
 def create_enemy_group(lvl, possible_enemies, enemy_quantity_for_level):
     '''
-    Creates a corresponding group of enemies depending on player's lvl
+    根据玩家等级创建敌人小队。
 
     Parameters:
     lvl : int
-        Player's lvl
+        玩家当前等级。
     possible_enemies : Dictionary
-        Dictionary of enemies to appear and their respective lvl range,
-        follows this syntax: {enemyClass : (lowestLvlToAppear, highestLvlToAppear)}
+        可能出现的敌人及其对应的等级范围，
+        采用以下格式：{enemyClass : (最低等级, 最高等级)}
     enemy_quantity_for_level : Dictionary
-        Dictionary of number of enemies to appear based on level,
-        follows this syntax: {levelUpToThisQuantityToAppear, Quantity}
-        for example, {3 : 1} means that up to level 3, only 1 enemy will appear.
+        根据玩家等级决定敌人数量，
+        格式示例：{等级上限 : 敌人数量}，
+        例如 {3: 1} 表示 3 级及以下最多出现 1 名敌人。
 
     Returns:
     enemy_group : List
-        List of enemy Battlers to appear
+        生成的敌人单位列表。
     '''
 
     enemies_to_appear = []
@@ -476,7 +472,7 @@ def create_enemy_group(lvl, possible_enemies, enemy_quantity_for_level):
             break
 
     enemy_group = []
-    # Select x enemies, being x a random number between 1 and max_enemies
+    # 随机选择 x 名敌人，其中 x 为 1 到 max_enemies 之间的随机数
     for i in range(random.randint(1, max_enemies)):
         enemy_instance = random.choice(enemies_to_appear)()
         enemy_group.append(enemy_instance)

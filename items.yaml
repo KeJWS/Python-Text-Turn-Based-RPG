@@ -78,7 +78,7 @@ Equipment:
   combo: ''
 - id: 9
   name: 🗡️ 木剑 Lv1
-  description: +
+  description: ''
   amount: 1
   individual_value: 12
   objectType: Weapon
@@ -87,7 +87,7 @@ Equipment:
   combo: None
 - id: 10
   name: 🔪 小刀 Lv1
-  description: +
+  description: ''
   amount: 1
   individual_value: 10
   objectType: Weapon
@@ -98,7 +98,7 @@ Equipment:
   combo: None
 - id: 11
   name: 🏏 木杖 Lv1
-  description: +
+  description: ''
   amount: 1
   individual_value: 10
   objectType: Weapon
@@ -109,14 +109,14 @@ Equipment:
   combo: None
 - id: 12
   name: 🏹 木弓 Lv1
-  description: +
+  description: ''
   amount: 1
   individual_value: 15
   objectType: Weapon
   statChangeList:
     atk: 4
     critCh: 15
-  combo: None
+  combo: quickSshooting
 - id: 13
   name: 🗡️ 长剑 Lv2
   description: ''
@@ -158,7 +158,7 @@ Equipment:
   statChangeList:
     atk: 6
     critCh: 25
-  combo: None
+  combo: quickSshooting2
 - id: 17
   name: 🏏 大锤 Lv2
   description: +
@@ -188,7 +188,7 @@ Equipment:
   combo: ''
 - id: 20
   name: 🛡️ 布衣 Lv1
-  description: +
+  description: ''
   amount: 1
   individual_value: 12
   objectType: Armor

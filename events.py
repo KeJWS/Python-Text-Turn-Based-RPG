@@ -5,6 +5,7 @@ import shops
 import items
 import enemies
 import quest
+from test.clear_screen import clear_screen
 
 class Event():
     '''
@@ -137,22 +138,27 @@ class ShopEvent(Event):
         while enter not in ['y', 'n']:
             enter = input("> ").lower()
         if enter == 'y':
+            clear_screen()
             print(self.enter)
             vendor = shops.Shop(self.itemSet)
             text.shop_menu(player)
             option = input("> ").lower()
             while option != 'e':
                 if option == 'b':
+                    clear_screen()
                     player.buy_from_vendor(vendor)
                 elif option == 's':
+                    clear_screen()
                     player.money += player.inventory.sell_item()
                 elif option == 't':
+                    clear_screen()
                     if self.quest != None and self.quest.status == 'Not Active':
                         self.quest.propose_quest(player)
                     else:
                         print(self.talk)
                 text.shop_menu(player)
                 option = input("> ").lower()
+        clear_screen()
         print(self.exit)
 
 class HealingEvent(Event):
@@ -193,11 +199,13 @@ class HealingEvent(Event):
             accept = input("> ").lower()
         if accept == 'y':
             if self.check_success():
+                clear_screen()
                 print(self.success)
                 player.heal(self.healingAmount)
             else:
                 print(self.fail)
         elif accept == 'n':
+            clear_screen()
             print(self.refuse)
 
 class InnEvent(HealingEvent):
@@ -226,12 +234,15 @@ class InnEvent(HealingEvent):
             accept = input("> ").lower()
         if accept == 'y':
             if player.money >= self.cost:
+                clear_screen()
                 print(self.success)
                 player.heal(self.healingAmount)
                 player.money -= self.cost
             else:
+                clear_screen()
                 print(self.fail)
         elif accept == 'n':
+            clear_screen()
             print(self.refuse)
 
 # 任务

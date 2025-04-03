@@ -2,19 +2,19 @@ import allies
 
 class Skill():
     '''
-    Skill is the parent class for Spells and Combos.
+    Skill 是法术（Spells）和连招（Combos）的父类。
 
     Attributes:
     name : str
-        Name of the skill.
+        技能名称。
     description : str
-        Skill's description.
+        技能描述。
     cost : int
-        Cost of MP or CP.
+        技能消耗的 MP 或 CP。
     isTargeted : bool
-        True if a target must be chosen, False if there is a default target.
+        如果需要选择目标则为 True，否则为 False。
     defaultTarget : str
-        Default target if spell is not targeted.
+        如果技能没有目标时的默认目标。
     '''
     def __init__(self, name, description, cost, isTargeted, defaultTarget) -> None:
         self.name = name
@@ -25,34 +25,32 @@ class Skill():
 
     def check_already_has_buff(self, target):
         '''
-        Checks if target Battler already has a buff from this skill.
-        Skill's name bust be equal to buff's.
+        检查目标单位是否已经有来自此技能的增益效果。
+        技能名称必须与增益效果的名称相同。
 
         Parameters:
         target : Battler
-            Target to check if already has this buff.
+            要检查的目标单位。
 
         Returns:
         True/False : bool
-            True if Battler already had buff. False if it didn't.
+            如果目标单位已经拥有该增益效果，返回 True；否则返回 False。
         '''
         for bd in target.buffsAndDebuffs:
             if bd.name == self.name:
-                print(f'{target.name} has their {self.name}\'s duration restarted')
+                print(f'{target.name} 的 {self.name} 持续时间已重置')
                 bd.restart()
                 return True
         return False
 
 class Spell(Skill):
     '''
-    Spells consume mp (Magic Points), which are restored by leveling up, using items,
-    events... They also increment when upgrading the WIS (Wisdom) aptitude or equipping
-    certain items. They use matk (Magic Attack) and their own power to calculate the
-    damage done. Inherits from Skill.
+    法术消耗 MP（魔法值），MP 可以通过升级、使用道具、事件等恢复。它们也会随着提升 WIS（智慧）能力或装备某些物品而增加。
+    法术使用 MATK（魔法攻击力）和自身的力量来计算伤害。继承自 Skill 类。
 
     Attributes:
     power : int
-        Power this spell has.
+        法术的伤害值。
     '''
     def __init__(self, name, description, power, cost, isTargeted, defaultTarget) -> None:
         super().__init__(name, description, cost, isTargeted, defaultTarget)
@@ -60,73 +58,71 @@ class Spell(Skill):
 
     def check_mp(self, caster):
         '''
-        Checks if caster has enough MP to cast the spell.
+        检查施法者是否有足够的 MP 来施放此法术。
 
         Parameters:
         caster : Battler
-            Caster of the spell.
-        
-        Returns:
+            施放法术的单位。
+
+        返回：
         True/False : bool
-            True if spell was casted succesfully. False if it didn't.
+            如果法术成功施放，返回 True；否则返回 False。
         '''
         if caster.stats['mp'] < self.cost:
-            print('Not enough MP!')
+            print('MP 不足！')
             return False
         else:
-            print(f'{caster.name} casts {self.name}!')
+            print(f'{caster.name} 施放了 {self.name}！')
             caster.stats['mp'] -= self.cost
             return True
 
 class Combo(Skill):
     '''
-    Combos consume cp (Combo Points), which counter is by default set to 0 when a battle
-    starts and increment as the Battler performs normal attacks. They can also increment
-    by using certain Skills. They usually have special effects and integrates normal
-    attacks within them. Inherits from Skill.
+    连招消耗 CP（连招点），每次战斗开始时，CP 默认为 0，并且随着战斗单位进行普通攻击而增加。
+    使用某些技能也可以增加 CP。连招通常具有特殊效果，并且结合了普通攻击。继承自 Skill 类。
     '''
     def __init__(self, name, description, cost, isTargeted, defaultTarget) -> None:
         super().__init__(name, description, cost, isTargeted, defaultTarget)
     
     def check_cp(self, caster):
         '''
-        Checks if caster has enough CP to perform the combo.
+        检查施放者是否有足够的 CP 来执行连招。
 
         Parameters:
         caster : Battler
-            Performer of the combo.
-        
-        Returns:
+            执行连招的单位。
+
+        返回：
         True/False : bool
-            True if combo was performed succesfully. False if it didn't.
+            如果连招成功执行，返回 True；否则返回 False。
         '''
         if caster.comboPoints < self.cost:
-            print('Not enough Combo Points!')
+            print('连招点不足！')
             return False
         else:
-            print(f'{caster.name} uses {self.name}!')
+            print(f'{caster.name} 使用了 {self.name}！')
             caster.comboPoints -= self.cost
             return True
 
-##### SPELLS #####
+##### 法术类 #####
 
 class DamageSpell(Spell):
     '''
-    Standard damaging Spell class. Inherits from Spell.
+    标准的伤害法术类，继承自 Spell。
     '''
     def __init__(self, name, description, power, mpCost, isTargeted, defaultTarget) -> None:
         super().__init__(name, description, power, mpCost, isTargeted, defaultTarget)
 
-    # TODO: Change target to always be a list.
+    # TODO: 修改目标，使其始终为列表。
     def effect(self, caster, target):
         '''
-        Deals damage based on spell's power to target.
+        根据法术的威力对目标造成伤害。
 
         Parameters:
         caster : Battler
-            Caster of the spell.
+            施法者。
         target : Battler/List
-            Target of the spell.
+            法术的目标。
         '''
         if self.check_mp(caster):
             if self.isTargeted:
@@ -140,11 +136,11 @@ class DamageSpell(Spell):
 
 class RecoverySpell(Spell):
     '''
-    Standard recovery Spell class. Inherits from Spell.
+    标准的恢复法术类，继承自 Spell。
 
     Attributes:
     stat : str
-        Stat to recover (mp/hp)
+        要恢复的属性（mp/hp）
     '''
     def __init__(self, name, description, power, mpCost, stat, isTargeted, defaultTarget) -> None:
         super().__init__(name, description, power, mpCost, isTargeted, defaultTarget)
@@ -152,13 +148,13 @@ class RecoverySpell(Spell):
     
     def effect(self, caster, target):
         '''
-        Recovers a certain amount of target's stat.
+        恢复目标的某项属性。
 
         Parameters:
         caster : Battler
-            Caster of the spell.
+            施法者。
         target : Battler/List
-            Target of the spell.
+            法术的目标。
         '''
         amountToRecover = 0
         if self.check_mp(caster):
@@ -170,15 +166,15 @@ class RecoverySpell(Spell):
 
 class BuffDebuffSpell(Spell):
     '''
-    Standard Spell that inflicts a buff/debuff on certain target.
+    标准的增益/减益法术，继承自 Spell。
 
     Attributes:
     statToChange : str
-        Stat to buff/debuff.
+        要增益或减益的属性。
     amountToChange : float
-        Percentage for stat to be changed (from 0 to 1).
+        属性改变的百分比（范围 0 到 1）。
     turns : int
-        Amount of turns the buff/debuff is active.
+        增益或减益效果持续的回合数。
     '''
     def __init__(self, name, description, power, mpCost, isTargeted, defaultTarget, statToChange, amountToChange, turns) -> None:
         super().__init__(name, description, power, mpCost, isTargeted, defaultTarget)
@@ -188,13 +184,13 @@ class BuffDebuffSpell(Spell):
 
     def effect(self, caster, target):
         '''
-        Casts a buff/debuff on target.
+        对目标施加增益或减益效果。
         
         Parameters:
         caster : Battler
-            Caster of the spell.
+            施法者。
         target : Battler/List
-            Target of the spell.
+            法术的目标。
         '''
         if self.check_mp(caster) and not self.check_already_has_buff(target):
             buff = BuffDebuff(self.name, target, self.statToChange, self.amountToChange, self.turns)
@@ -202,11 +198,11 @@ class BuffDebuffSpell(Spell):
 
 class SummonSpell(Spell):
     '''
-    Standard Spell that summons a certain ally.
+    标准召唤法术，召唤特定的盟友。
 
     Attributes:
     summoning : Battler
-        Battler to summon.
+        召唤出的战斗者。
     '''
     def __init__(self, name, description, power, cost, isTargeted, defaultTarget, summoning) -> None:
         super().__init__(name, description, power, cost, isTargeted, defaultTarget)
@@ -214,28 +210,28 @@ class SummonSpell(Spell):
 
     def effect(self, caster, allies):
         '''
-        Summons a battler to help in battler.
+        召唤战斗者加入战斗。
 
         Parameters:
         caster : Battler
-            Caster of the spell.
+            施放法术的角色。
         target : Battler/List
-            Target of the spell.
+            施法的目标。
         '''
         if self.check_mp(caster):
             summoningInst = self.summoning()
             allies.append(summoningInst)
-            print(f'You summoned {summoningInst.name}')
+            print(f'你召唤出了 {summoningInst.name}')
 
-##### COMBOS #####
+##### 连击技能 #####
 
 class SlashCombo(Combo):
     '''
-    Standard slashing Combo (Performs X normal attacks). Inherits from Combo.
+    标准斩击连击（执行 X 次普通攻击）。继承自 Combo。
 
     Attributes:
     timesToHit : int
-        Number of normal attacks performed.
+        普通攻击的次数。
     '''
     def __init__(self, name, description, comboCost, isTargeted, defaultTarget, timesToHit) -> None:
         super().__init__(name, description, comboCost, isTargeted, defaultTarget)
@@ -243,26 +239,26 @@ class SlashCombo(Combo):
 
     def effect(self, caster, target):
         '''
-        Caster performs X normal attacks against target.
+        施术者对目标发动 X 次普通攻击。
 
         Parameters:
         caster : Battler
-            Caster of the combo.
+            施放连击的角色。
         target : Battler/List
-            Target of the combo.
+            目标角色。
         '''
         if self.check_cp(caster):
-            print(f'{caster.name} attacks {target.name} {self.timesToHit} times!')
+            print(f'{caster.name} 对 {target.name} 发动 {self.timesToHit} 次攻击！')
             for _ in range(self.timesToHit):
                 caster.normal_attack(target)
 
 class ArmorBreakingCombo(Combo):
     '''
-    Standard armor debuff Combo. Inherits from Combo.
+    标准护甲削弱连击。继承自 Combo。
 
     Attributes:
     armorDestroyed : float
-        Percentage of destroyed armor (from -1 to 1, for it being a debuff should be -1 < armorDestroyed < 0)
+        护甲削弱百分比（范围 -1 到 1，作为削弱效果应在 -1 < armorDestroyed < 0）。
     '''
     def __init__(self, name, description, cost, isTargeted, defaultTarget, armorDestroyed) -> None:
         super().__init__(name, description, cost, isTargeted, defaultTarget)
@@ -270,28 +266,28 @@ class ArmorBreakingCombo(Combo):
     
     def effect(self, caster, target):
         '''
-        Caster performs a normal attack and debuffs target's armor. Inherits from Combo.
+        施术者发动普通攻击并削弱目标的护甲。
 
         Parameters:
         caster : Battler
-            Caster of the combo.
+            施放连击的角色。
         target : Battler/List
-            Target of the combo.
+            目标角色。
         '''
         if self.check_cp(caster):
-            print(f'{caster.name} pierces {target.name}\'s armor!')
+            print(f'{caster.name} 撕裂了 {target.name} 的护甲！')
             if not self.check_already_has_buff(target):
-                armorBreak = BuffDebuff('Armor Break', target, 'def', self.armorDestroyed, 4)
+                armorBreak = BuffDebuff('护甲破坏', target, 'def', self.armorDestroyed, 4)
                 armorBreak.activate()
                 caster.normal_attack(target)
-            
+
 class VampirismCombo(Combo):
     '''
-    Standard life-draining Combo. Inherits from Combo.
+    标准生命吸取连击。继承自 Combo。
 
     Attributes:
     percentHeal : float
-        Percentage of healed hp based of damage dealt. (From 0 to 1)
+        根据造成的伤害恢复生命值的百分比（范围 0 到 1）。
     '''
     def __init__(self, name, description, cost, isTargeted, defaultTarget, percentHeal) -> None:
         super().__init__(name, description, cost, isTargeted, defaultTarget)
@@ -299,13 +295,13 @@ class VampirismCombo(Combo):
 
     def effect(self, caster, target):
         '''
-        Caster performs a normal attack and heals some hp based of damage dealt.
+        施术者发动普通攻击，并根据造成的伤害恢复生命值。
 
         Parameters:
         caster : Battler
-            Caster of the combo.
+            施放连击的角色。
         target : Battler/List
-            Target of the combo.
+            目标角色。
         '''
         if self.check_cp(caster):
             amountToRecover = caster.normal_attack(target) * self.percentHeal
@@ -313,11 +309,11 @@ class VampirismCombo(Combo):
 
 class RecoveryCombo(Combo):
     '''
-    Standard recovery Combo class. Inherits from Combo.
+    标准恢复类连击。继承自 Combo。
 
     Attributes:
     stat : str
-        Stat to recover (mp/hp)
+        恢复的属性（mp/hp）。
     '''
     def __init__(self, name, description, cost, stat, amountToChange, isTargeted, defaultTarget) -> None:
         super().__init__(name, description, cost, isTargeted, defaultTarget)
@@ -326,13 +322,13 @@ class RecoveryCombo(Combo):
     
     def effect(self, caster, target):
         '''
-        Recovers a certain amount of target's stat.
+        恢复目标的某项属性值。
 
         Parameters:
         caster : Battler
-            Caster of the combo.
+            施放连击的角色。
         target : Battler/List
-            Target of the combo.
+            目标角色。
         '''
         if self.check_cp(caster):
             if self.stat == 'hp':
@@ -340,25 +336,25 @@ class RecoveryCombo(Combo):
             elif self.stat == 'mp':
                 target.recover_mp(self.amountToChange)
 
-##### MISC #####
+##### 增益与减益状态 #####
 
 class BuffDebuff():
     '''
-    Class that handles buffs and debuffs for a certain stat.
+    处理某项属性的增益和减益效果的类。
 
     Attributes:
     name : str
-        Name of the buff/debuff (should be the same as Skill that triggered it).
+        增益/减益的名称（应与触发它的技能名称相同）。
     target : Battler
-        Battler affected by the buff/debuff.
+        受到增益/减益影响的战斗者。
     statToChange : str
-        Stat affected by the buff/debuff
+        受到影响的属性。
     amountToChange : float
-        Percentage for stat to change. (From -1 to 1).
+        属性变动的百分比（范围 -1 到 1）。
     turns : int
-        Current turns left for the buff/debuff to be disappear.
+        剩余的回合数。
     maxTurns : int
-        Maximum number of turns the buff/debuff can be active (default durations)
+        增益/减益的最大持续回合数（默认时长）。
     '''
     def __init__(self, name, target, statToChange, amountToChange, turns) -> None:
         self.name = name
@@ -370,25 +366,25 @@ class BuffDebuff():
 
     def activate(self):
         '''
-        Activates the effect of the buff/debuff.
+        激活增益/减益效果。
         '''
         self.target.buffsAndDebuffs.append(self)
         if self.amountToChange < 0:
-            print(f'{self.target.name} has their {self.statToChange} debuffed by {self.amountToChange * 100}% for {self.turns} turns')
+            print(f'{self.target.name} 的 {self.statToChange} 被削弱了 {self.amountToChange * 100}%，持续 {self.turns} 回合')
         else:
-            print(f'{self.target.name} has their {self.statToChange} buffed by {self.amountToChange * 100}% for {self.turns} turns')
+            print(f'{self.target.name} 的 {self.statToChange} 提升了 {self.amountToChange * 100}%，持续 {self.turns} 回合')
         self.difference = int(self.target.stats[self.statToChange] * self.amountToChange)
         self.target.stats[self.statToChange] += self.difference
 
     def restart(self):
         '''
-        Restarts the duration/turn count of this buff/debuff.
+        重置该增益/减益的持续回合数。
         '''
         self.turns = self.maxTurns
 
     def check_turns(self):
         '''
-        Subtracts 1 to the turn count the buff/debuff is still active and checks if it should deactivate.
+        每回合减少 1 点持续时间，并检查是否应该移除该效果。
         '''
         self.turns -= 1
         if self.turns <= 0:
@@ -396,25 +392,28 @@ class BuffDebuff():
 
     def deactivate(self):
         '''
-        Deactivates buff/debuff.
+        移除增益/减益效果。
         '''
-        print(f'The effect of {self.name} has ended')
+        print(f'{self.name} 的效果已结束')
         self.target.buffsAndDebuffs.remove(self)
         self.target.stats[self.statToChange] -= self.difference
 
-##### SPELL & COMBO INSTANCES #####
+##### 法术与连击技能实例 #####
 
-spellFireball = DamageSpell('Fireball', '', 15, 3, True, None)
-spellDivineBlessing = RecoverySpell('Divine Blessing', '', 8, 4, 'hp', True, None)
-spellEnhanceWeapon = BuffDebuffSpell('Enhance Weapon', '', 0, 5, False, 'self', 'atk', 0.5, 3)
-spellInferno = DamageSpell('Inferno', '', 14, 7, False, 'all_enemies')
-spellSkeletonSummoning = SummonSpell('Summon Skeleton', '', 0, 4, False, 'allies', allies.SummonedSkeleton)
-spellFireSpiritSummonning = SummonSpell('Summon Fire Spirit', '', 0, 12, False, 'allies', allies.SummonedFireSpirit)
+spellFireball = DamageSpell('火球术', '', 15, 3, True, None)
+spellDivineBlessing = RecoverySpell('神圣祝福', '', 8, 4, 'hp', True, None)
+spellEnhanceWeapon = BuffDebuffSpell('强化武器', '', 0, 5, False, 'self', 'atk', 0.5, 3)
+spellInferno = DamageSpell('烈焰风暴', '', 14, 7, False, 'all_enemies')
+spellSkeletonSummoning = SummonSpell('召唤骷髅', '', 0, 4, False, 'allies', allies.SummonedSkeleton)
+spellFireSpiritSummonning = SummonSpell('召唤火焰精灵', '', 0, 12, False, 'allies', allies.SummonedFireSpirit)
 
-comboSlash1 = SlashCombo('Slash Combo I', '', 3, True, None, 3)
-comboSlash2 = SlashCombo('Slash Combo II', '', 3, True, None, 4)
-comboArmorBreaker1 = ArmorBreakingCombo('Armor Break I', '', 2, True, None, -0.3)
-comboVampireStab1 = VampirismCombo('Vampire Stab I', '', 2, True, None, 0.3)
-comboVampireStab2 = VampirismCombo('Vampire Stab II', '', 2, True, None, 0.5)
-comboMeditation1 = RecoveryCombo('Meditation I', '', 1, 'mp', 5, False, 'self')
-comboMeditation2 = RecoveryCombo('Meditation II', '', 2, 'mp', 15, False, 'self')
+comboSlash1 = SlashCombo('斩击连击 I', '', 3, True, None, 3)
+comboSlash2 = SlashCombo('斩击连击 II', '', 3, True, None, 4)
+comboArmorBreaker1 = ArmorBreakingCombo('破甲斩 I', '', 2, True, None, -0.3)
+comboVampireStab1 = VampirismCombo('吸血刺击 I', '', 2, True, None, 0.3)
+comboVampireStab2 = VampirismCombo('吸血刺击 II', '', 2, True, None, 0.5)
+comboMeditation1 = RecoveryCombo('冥想 I', '', 1, 'mp', 5, False, 'self')
+comboMeditation2 = RecoveryCombo('冥想 II', '', 2, 'mp', 15, False, 'self')
+
+quickSshooting = SlashCombo('快速连射 I', '', 1, True, None, 2)
+quickSshooting2 = SlashCombo('快速连射 II', '', 2, True, None, 3)

@@ -7,18 +7,18 @@ id,name,description,amount,individual_value,objectType,combo,statChangeList
 6 ,🛡️ 新手盔甲 Lv0,,1,10,Armor,None,"{'maxHp': 1, 'def': 3, 'speed': 1}"
 7 ,🛡️ 旧长袍 Lv0,,1,10,Armor,None,"{'maxHp': 1, 'def': 1, 'mdef': 2, 'maxMp': 2}"
 8 ,# 基础物品,---基础武器---,1,0,,,
-9 ,🗡️ 木剑 Lv1,+,1,12,Weapon,None,{'atk': 5}
-10,🔪 小刀 Lv1,+,1,10,Weapon,None,"{'atk': 3, 'critCh': 5, 'speed': 3}"
-11,🏏 木杖 Lv1,+,1,10,Weapon,None,"{'atk': 1, 'matk': 2, 'maxMp': 2}"
-12,🏹 木弓 Lv1,+,1,15,Weapon,None,"{'atk': 4, 'critCh': 15}"
+9 ,🗡️ 木剑 Lv1,,1,12,Weapon,None,{'atk': 5}
+10,🔪 小刀 Lv1,,1,10,Weapon,None,"{'atk': 3, 'critCh': 5, 'speed': 3}"
+11,🏏 木杖 Lv1,,1,10,Weapon,None,"{'atk': 1, 'matk': 2, 'maxMp': 2}"
+12,🏹 木弓 Lv1,,1,15,Weapon,quickSshooting,"{'atk': 4, 'critCh': 15}"
 13,🗡️ 长剑 Lv2,,1,19,Weapon,comboSlash1,"{'atk': 6, 'def': 2}"
 14,🔪 匕首 Lv2,,1,15,Weapon,comboVampireStab1,"{'atk': 4, 'critCh': 10, 'speed': 2}"
 15,🏏 法杖 Lv2,,1,18,Weapon,comboMeditation1,"{'atk': 2, 'matk': 3, 'maxMp': 4}"
-16,🏹 长弓 Lv2,+,1,45,Weapon,None,"{'atk': 6, 'critCh': 25}"
+16,🏹 长弓 Lv2,+,1,45,Weapon,quickSshooting2,"{'atk': 6, 'critCh': 25}"
 17,🏏 大锤 Lv2,+,1,40,Weapon,None,"{'atk': 10, 'speed': -3}"
 18,🗡️ 钢剑 Lv2,+,1,60,Weapon,None,{'atk': 8}
 19,,---基础盔甲---,1,0,,,
-20,🛡️ 布衣 Lv1,+,1,12,Armor,None,"{'maxHp': 2, 'def': 2, 'speed': 1}"
+20,🛡️ 布衣 Lv1,,1,12,Armor,None,"{'maxHp': 2, 'def': 2, 'speed': 1}"
 21,🛡️ 布甲 Lv2,,1,18,Armor,None,"{'maxHp': 3, 'def': 3, 'speed': 2}"
 22,🛡️ 青铜盔甲 Lv2,,1,25,Armor,None,"{'maxHp': 4, 'def': 5}"
 23,🛡️ 学者长袍 Lv2,,1,25,Armor,None,"{'maxHp': 3, 'def': 3, 'mdef': 3, 'maxMp': 4}"

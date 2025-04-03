@@ -116,6 +116,7 @@ def give_initial_items(myPlayer):
     elif option == '6':
         items.woodenStaff.add_to_inventory_player(myPlayer.inventory)
         items.oldRobes.add_to_inventory_player(myPlayer.inventory)
+        items.grimoireDivineBlessing.add_to_inventory_player(myPlayer.inventory)
         myPlayer.stats['mdef'] += 5; print("选择僧侣: 魔防+5")
     print(f"[DEBUG] 选择了初始装备: {option}")
     print('[ \033[31m请记得在背包中装备这些物品\033[0m ]')
