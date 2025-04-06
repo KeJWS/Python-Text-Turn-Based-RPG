@@ -1,4 +1,7 @@
 # ⚔ Python Text Turn-Based RPG System ⚔
+
+[中文版介绍](README_zh.md)
+
 Hello there! What lies before your eyes is an attempt of making a functional turn-based RPG completely in Python. Keep in mind that it is more about making a system rather than a whole game. 
 
 ![imagen](https://user-images.githubusercontent.com/75074498/152515962-d4d4c3f6-1f11-4490-8d1c-c5a947aaf7b6.png)
